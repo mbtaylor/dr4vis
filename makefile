@@ -23,7 +23,7 @@ sky.fits: stilts
 	sh drmap.sh -stilts ./stilts -name sky -hpx 8
 
 sky10.fits: stilts
-	sh drmap.sh -stilts ./stilts -name sky10 -authall -hpx 10
+	sh drmap.sh -stilts "./stilts -Xmx16G" -name sky10 -authall -hpx 10
 
 lmc.fits: stilts
 	sh drmap.sh -stilts ./stilts -name lmc -hpx 12 \
