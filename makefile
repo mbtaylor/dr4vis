@@ -50,11 +50,9 @@ veryclean: clean
 	rm -f $(DATA_FILES)
 	rm -rf $(DATA_FILES:.fits=)
 
-# The STILTS version must be >=00804bd49; this is later than STILTS 3.4-10,
-# and at time of writing is not available in a public release.
-# Once a public release later than 3.4-10 is available, that can be used.
+# STILTS version 3.5 works, so should later versions
 stilts.jar:
-	curl -O https://www.star.bristol.ac.uk/mbt/releases/stilts/pre/stilts.jar
+	curl -OL http://www.starlink.ac.uk/stilts/stilts.jar
 
 stilts: stilts.jar
 	unzip stilts.jar stilts
