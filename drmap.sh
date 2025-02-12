@@ -113,7 +113,7 @@ do
    fi
 done
 
-table=user_dr4int3.gaia_source
+table=user_dr4int4.gaia_source
 file2p=$name/$name-2p-dr4.fits
 file5p=$name/$name-5p-dr4.fits
 echo $file2p
