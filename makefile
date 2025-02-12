@@ -149,7 +149,7 @@ $(CENTERFRAC_FIGS): center.fits stilts
                in=center.fits \
                viewsys=galactic clon=0 clat=0 radius=10 \
                xpix=600 ypix=400 \
-               sex=false scalebar=false grid=false \
+               sex=false scalebar=false \
                legend=true legpos=0.9,0.9 leglabel=$$dr \
                auxmap=light auxfunc=square auxmin=0.0 auxmax=1.0 \
                auxlabel="Fraction of sources with 5-parameter astrometry" \
