@@ -1,7 +1,7 @@
 
 DATA_FILES = center.fits sky.fits smc.fits lmc.fits
 MONTAGE_FIGS = center.png center5p.png nobs.png lmcfrac.png centerfrac.png
-OTHER_FIGS = density-dr34.png density5p-dr34.png
+OTHER_FIGS = sky-dr34.png sky5p-dr34.png center-dr34.png center5p-dr34.png
 
 CENTER_FIGS = center-dr1.png center-dr2.png center-dr3.png center-dr4.png
 CENTER5P_FIGS = center5p-dr1.png center5p-dr2.png \
@@ -59,28 +59,55 @@ stilts: stilts.jar
 	touch stilts
 	chmod +x stilts
 
-density-dr34.png: sky.fits stilts
+sky-dr34.png: sky.fits stilts
 	./stilts plot2sky \
-               in=sky.fits \
-               viewsys=galactic datasys=equatorial projection=aitoff \
-               grid=true labelpos=none \
-               xpix=900 ypix=440 \
-               auxmap=hotcold auxmin=0.799 auxmax=1.201 auxflip=true \
-               layer=healpix degrade=1 healpix=hpx8 datalevel=8 \
-               value=nsrc_dr4*1.0/nsrc_dr3 \
-               out=$@
+                 in=sky.fits \
+                 viewsys=galactic datasys=equatorial projection=aitoff \
+                 grid=true labelpos=none \
+                 xpix=1200 ypix=580 \
+                 auxmap=gnuplot auxmin=1.0 auxmax=2.01 auxfunc=log auxcrowd=.5 \
+                 auxlabel='ratio of DR4 to DR3 sources' \
+                 layer=healpix degrade=0 healpix=hpx8 datalevel=8 \
+                 value=nsrc_dr4*1.0/nsrc_dr3 \
+                 out=$@
 
-density5p-dr34.png: sky.fits stilts
+sky5p-dr34.png: sky.fits stilts
 	./stilts plot2sky \
-               in=sky.fits \
-               viewsys=galactic datasys=equatorial projection=aitoff \
-               grid=true labelpos=none \
-               xpix=900 ypix=440 \
-               auxmap=cubehelix auxmin=1 auxmax=2 auxfunc=sqrt \
-               auxvisible=true\
-               layer=healpix degrade=1 healpix=hpx8 datalevel=8 \
-               value=nsrc_5p_dr4*1.0/nsrc_5p_dr3 \
-               out=$@
+                 in=sky.fits \
+                 viewsys=galactic datasys=equatorial projection=aitoff \
+                 grid=true labelpos=none \
+                 xpix=1200 ypix=580 \
+                 auxmap=gnuplot auxmin=1.0 auxmax=2.01 auxfunc=log auxcrowd=.5 \
+                 auxlabel='ratio of DR4 to DR3 5+-parameter sources' \
+                 layer=healpix degrade=0 healpix=hpx8 datalevel=8 \
+                 value=nsrc_5p_dr4*1.0/nsrc_5p_dr3 \
+                 out=$@
+
+center-dr34.png: center.fits stilts
+	./stilts plot2sky \
+                 in=center.fits \
+                 viewsys=galactic datasys=equatorial clon=0 clat=0 radius=10 \
+                 sex=false scalebar=false \
+                 xpix=1200 ypix=800 \
+                 auxmap=rainforest auxmin=1.0 auxmax=9 auxfunc=log \
+                 auxlabel='ratio of DR4 to DR3 sources' \
+                 layer=healpix healpix=hpx12 \
+                 datalevel=12 degrade=1 combine=median \
+                 value=nsrc_dr4*1.0/nsrc_dr3 \
+                 out=$@
+
+center5p-dr34.png: center.fits stilts
+	./stilts plot2sky \
+                 in=center.fits \
+                 viewsys=galactic datasys=equatorial clon=0 clat=0 radius=10 \
+                 sex=false scalebar=false \
+                 xpix=1200 ypix=800 \
+                 auxmap=rainforest auxmin=1.0 auxmax=9 auxfunc=log \
+                 auxlabel='ratio of DR4 to DR3 5+-parameter sources' \
+                 layer=healpix healpix=hpx12 \
+                 datalevel=12 degrade=1 combine=median \
+                 value=nsrc_5p_dr4*1.0/nsrc_5p_dr3 \
+                 out=$@
                
 $(CENTER_FIGS): center.fits stilts
 	dr=`echo $@ | sed -e's/.*\(dr.\).*/\1/'`; \
@@ -90,7 +117,7 @@ $(CENTER_FIGS): center.fits stilts
                sex=false scalebar=false \
                legend=true legpos=0.9,0.9 leglabel=$$dr \
                xpix=600 ypix=400 \
-               auxmap=heat auxclip=0.05,1 auxmin=0 auxmax=414 \
+               auxmap=ember auxclip=0,1 auxmin=0 auxmax=670 \
                auxlabel='sources per square arcminute' \
                layer=healpix healpix=hpx12 value=density_$$dr \
                datalevel=12 degrade=2 combine=median datasys=equatorial \
@@ -105,10 +132,10 @@ $(CENTER5P_FIGS): center.fits stilts
                sex=false scalebar=false \
                legend=true legpos=0.9,0.9 leglabel=$$dr \
                xpix=600 ypix=400 \
-               auxmap=heat auxclip=0.05,1 auxmin=0 auxmax=414 \
-               auxlabel='sources with 5-parameter astrometry per square arcmin'\
+               auxmap=ember auxclip=0,1 auxmin=0 auxmax=670 \
+               auxlabel='5+-parameter sources per square arcminute'\
                layer=healpix healpix=hpx12 value=density_5p_$$dr \
-               datalevel=12 degrade=$$degrade combine=mean datasys=equatorial \
+               datalevel=12 degrade=$$degrade combine=median datasys=equatorial\
                out=$@
 
 $(NOBS_FIGS): sky.fits stilts
@@ -133,8 +160,8 @@ $(LMCFRAC_FIGS): lmc.fits stilts
                viewsys=galactic clon=279 clat=-32.5 radius=7.5 \
                sex=false scalebar=false grid=false \
                legend=true legpos=0.9,0.9 leglabel=$$dr \
-               auxmap=light auxfunc=square auxmin=0.0 auxmax=1.0 \
-               auxlabel="Fraction of sources with 5-parameter astrometry" \
+               auxmap=light auxfunc=linear auxmin=0.5 auxmax=1.0 \
+               auxlabel="Fraction of sources with 5+-parameter astrometry" \
                layer=healpix healpix=hpx12 \
                value=nsrc_5p_$$dr*1.0/nsrc_$$dr \
                datalevel=12 degrade=$$degrade combine=mean datasys=equatorial \
@@ -150,7 +177,7 @@ $(CENTERFRAC_FIGS): center.fits stilts
                sex=false scalebar=false \
                legend=true legpos=0.9,0.9 leglabel=$$dr \
                auxmap=light auxfunc=square auxmin=0.0 auxmax=1.0 \
-               auxlabel="Fraction of sources with 5-parameter astrometry" \
+               auxlabel="Fraction of sources with 5+-parameter astrometry" \
                layer=healpix healpix=hpx12 \
                value=nsrc_5p_$$dr*1.0/nsrc_$$dr \
                datalevel=12 degrade=$$degrade combine=mean datasys=equatorial \
