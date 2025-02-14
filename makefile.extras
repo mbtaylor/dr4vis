@@ -1,0 +1,66 @@
+
+cfregions.fits: stilts
+	stilts -Dauth.username=@username -Dauth.password=@password \
+               tapquery auth=true \
+                        sync=true \
+                        tapurl=https://geapre.esac.esa.int/tap-server/tap \
+                        adql="select region_name, ra, dec, nsrc, nimg \
+                              from (select region_name, avg(ra) as ra, \
+                                    avg(dec) as dec, count(*) as nsrc \
+                                    from user_dr4int4.crowded_field_source \
+                                    group by region_name) as s \
+                              join (select region_name, count(*) as nimg \
+                                 from user_dr4int4.crowded_field_image_summary \
+                                    group by region_name) as f \
+                              using (region_name)" \
+                        out=$@
+
+cf.fits: stilts
+	stilts -Dauth.username=@username -Dauth.password=@password \
+               tapquery auth=true \
+                        tapurl=https://geapre.esac.esa.int/tap-server/tap \
+                        adql="select source_id, ra, dec, parallax \
+                              from user_dr4int4.gaia_source \
+                              where astrometry_origin='crowded_field_source'" \
+                        out=$@
+
+baade.fits: stilts
+	stilts -Dauth.username=@username -Dauth.password=@password \
+               tapquery auth=true \
+                        tapurl=https://geapre.esac.esa.int/tap-server/tap \
+                        sync=false \
+                        adql="select source_id, ra, dec, parallax \
+                              from user_dr4int4.gaia_source \
+                              where l between 0 and 2 and b between -5 and -3" \
+                        maxrec=16000000 \
+                        out=$@
+
+baade-pairs.fits: stilts baade.fits
+	stilts tmatch1 \
+               in=baade.fits \
+               matcher=sky params=0.1 values='ra dec' \
+               action=wide2 \
+               ocmd="addcol -units mas dist \
+                     skyDistanceDegrees(ra_1,dec_1,ra_2,dec_2)*3600*1000" \
+               out=$@
+
+baade-sample.fits: stilts
+	stilts -Dauth.username=@username -Dauth.password=@password \
+               tapquery auth=true \
+                        tapurl=https://geapre.esac.esa.int/tap-server/tap \
+                        sync=false \
+                        adql="select top 1000000 * \
+                              from user_dr4int4.gaia_source \
+                              where l between 0 and 2 and b between -5 and -3 \
+                              order by random_index" \
+                        out=$@
+baade-sample-pairs.fits: stilts baade-sample.fits
+	stilts tmatch1 \
+               in=baade-sample.fits \
+               matcher=sky params=0.1 values='ra dec' \
+               action=wide2 \
+               ocmd="addcol -units mas dist \
+                     skyDistanceDegrees(ra_1,dec_1,ra_2,dec_2)*3600*1000" \
+               out=$@
+
+
