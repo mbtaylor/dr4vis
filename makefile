@@ -1,4 +1,26 @@
 
+# Requirements:
+#   java (to construct the data)
+#   ImageMagick (to manipulate some of the figures)
+
+# For access to the embargoed data products, if you have authorization,
+# you should also put your cosmos username and password into files named
+# "username" and "password" so you don't have to keep typing them
+# in response to prompts.
+
+# make build generates a bunch of visualisations, mostly density maps.
+# At time of writing, this takes about 6 hours to run, mostly waiting for
+# queries to execute remotely on the Gaia archive.
+# It's OK to interrupt it or lose the network connection: it should
+# generally pick up from where it left off.
+
+# This is the ImageMagick convert command.  Depending on your ImageMagick
+# version you might need to set it to "magick" instead.
+CONVERT = convert
+
+# Some kind of image viewing command, used only for view target.
+VIEW = eog
+
 DATA_FILES = center.fits sky.fits smc.fits lmc.fits
 MONTAGE_FIGS = center.png center5p.png nobs.png lmcfrac.png centerfrac.png
 OTHER_FIGS = sky-dr34.png sky5p-dr34.png center-dr34.png center5p-dr34.png
@@ -38,7 +60,7 @@ m31.fits: stilts
            -where "ra BETWEEN 9.2 AND 12.2 AND dec BETWEEN 39.8 AND 42.8"
 
 view: build
-	eog $(MONTAGE_FIGS) $(OTHER_FIGS)
+	$(VIEW) $(MONTAGE_FIGS) $(OTHER_FIGS)
 
 clean:
 	rm -f $(CENTER_FIGS) $(CENTER5P_FIGS) $(NOBS_FIGS)
@@ -184,28 +206,28 @@ $(CENTERFRAC_FIGS): center.fits stilts
                out=$@
 
 center.png: $(CENTER_FIGS)
-	convert \( center-dr1.png center-dr2.png +append \) \
-                \( center-dr3.png center-dr4.png +append \) \
-                -append $@
+	$(CONVERT) \( center-dr1.png center-dr2.png +append \) \
+                   \( center-dr3.png center-dr4.png +append \) \
+                   -append $@
 
 center5p.png: $(CENTER5P_FIGS)
-	convert \( center5p-dr1.png center5p-dr2.png +append \) \
-                \( center5p-dr3.png center5p-dr4.png +append \) \
-                -append $@
+	$(CONVERT) \( center5p-dr1.png center5p-dr2.png +append \) \
+                   \( center5p-dr3.png center5p-dr4.png +append \) \
+                   -append $@
 
 nobs.png: $(NOBS_FIGS)
-	convert \( nobs-dr1.png nobs-dr2.png +append \) \
-                \( nobs-dr3.png nobs-dr4.png +append \) \
-                -append $@
+	$(CONVERT) \( nobs-dr1.png nobs-dr2.png +append \) \
+                   \( nobs-dr3.png nobs-dr4.png +append \) \
+                   -append $@
 
 lmcfrac.png: $(LMCFRAC_FIGS)
-	convert \( lmcfrac-dr1.png lmcfrac-dr2.png +append \) \
-                \( lmcfrac-dr3.png lmcfrac-dr4.png +append \) \
-                -append $@
+	$(CONVERT) \( lmcfrac-dr1.png lmcfrac-dr2.png +append \) \
+                   \( lmcfrac-dr3.png lmcfrac-dr4.png +append \) \
+                   -append $@
 
 centerfrac.png: $(CENTERFRAC_FIGS)
-	convert \( centerfrac-dr1.png centerfrac-dr2.png +append \) \
-                \( centerfrac-dr3.png centerfrac-dr4.png +append \) \
-                -append $@
+	$(CONVERT) \( centerfrac-dr1.png centerfrac-dr2.png +append \) \
+                   \( centerfrac-dr3.png centerfrac-dr4.png +append \) \
+                   -append $@
 
 
