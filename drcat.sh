@@ -80,7 +80,7 @@ do
    fi
 done
 
-table=user_dr4int4.gaia_source
+table=user_dr4int5.gaia_source
 file=$name/$name-dr4.fits
 if [ ! -e $file ]
 then
