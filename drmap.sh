@@ -59,12 +59,18 @@ authparam="auth=true"
 cols2p="CAST(gaia_healpix_index($hpx, source_id) AS INT) as hpx$hpx, \
         COUNT(*) as nsrc, \
         AVG(astrometric_n_obs_al) AS nobs"
+
+# The TO_DOUBLEs here are to avoid cryptic "underflow" errors reported
+# for dr4int6 - see C9GACS-1094.  It sounds like these will disappear
+# in the final DR4 release?
 cols5p="$cols2p, \
         AVG(parallax) AS parallax, \
         AVG(SQRT(pmra*pmra+pmdec*pmdec)) AS pm, \
-        AVG(SQRT(ra_error*ra_error+dec_error*dec_error)) AS pos_error, \
+        AVG(SQRT(TO_DOUBLE(ra_error)*TO_DOUBLE(ra_error) + \
+                 TO_DOUBLE(dec_error)*TO_DOUBLE(dec_error))) AS pos_error, \
         AVG(parallax_error) AS parallax_error, \
-        AVG(SQRT(pmra_error*pmra_error+pmdec_error*pmdec_error)) AS pm_error"
+        AVG(SQRT(TO_DOUBLE(pmra_error)*TO_DOUBLE(pmra_error) + \
+                 TO_DOUBLE(pmdec_error)*TO_DOUBLE(pmdec_error))) AS pm_error"
 grouping="GROUP BY hpx$hpx ORDER BY hpx$hpx"
 densefact=`$stilts calc expression="1./(4*PI*square(180*60/PI)/(12L<<2*$hpx))"`
 densecmd="addcol -units arcmin**-2 density nsrc*`echo $densefact`"
