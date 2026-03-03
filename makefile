@@ -25,13 +25,23 @@ DATA_FILES = center.fits sky.fits smc.fits lmc.fits
 MONTAGE_FIGS = center.png center5p.png nobs.png lmcfrac.png centerfrac.png
 OTHER_FIGS = sky-dr34.png sky5p-dr34.png center-dr34.png center5p-dr34.png
 
-CENTER_FIGS = center-dr1.png center-dr2.png center-dr3.png center-dr4.png
-CENTER5P_FIGS = center5p-dr1.png center5p-dr2.png \
-                center5p-dr3.png center5p-dr4.png
-CENTERFRAC_FIGS = centerfrac-dr1.png centerfrac-dr2.png \
-                  centerfrac-dr3.png centerfrac-dr4.png
-NOBS_FIGS = nobs-dr1.png nobs-dr2.png nobs-dr3.png nobs-dr4.png
-LMCFRAC_FIGS = lmcfrac-dr1.png lmcfrac-dr2.png lmcfrac-dr3.png lmcfrac-dr4.png
+CENTER_FIGS = center-dr1.png center-dr2.png center-dr3.png \
+              center-dr4gs.png center-dr4as.png
+CENTER5P_FIGS = center5p-dr1.png center5p-dr2.png center5p-dr3.png \
+                center5p-dr4gs.png center5p-dr4as.png
+CENTERFRAC_FIGS = centerfrac-dr1.png centerfrac-dr2.png centerfrac-dr3.png \
+                  centerfrac-dr4gs.png centerfrac-dr4as.png
+NOBS_FIGS = nobs-dr1.png nobs-dr2.png nobs-dr3.png nobs-dr4gs.png nobs-dr4as.png
+LMC_FIGS = lmc-dr1.png lmc-dr2.png lmc-dr3.png lmc-dr4gs.png lmc-dr4as.png
+LMCFRAC_FIGS = lmcfrac-dr1.png lmcfrac-dr2.png lmcfrac-dr3.png \
+               lmcfrac-dr4gs.png lmcfrac-dr4as.png
+
+F1 = dr1
+F2 = dr2
+F3 = dr3
+F4 = dr4gs
+
+DR_FROM_TARGET_FIG = `echo $@ | sed -e's/.*\(dr[1234][a-z]*\).*/\1/'`
 
 build: $(MONTAGE_FIGS) $(OTHER_FIGS)
 
@@ -63,7 +73,7 @@ view: build
 	$(VIEW) $(MONTAGE_FIGS) $(OTHER_FIGS)
 
 clean:
-	rm -f $(CENTER_FIGS) $(CENTER5P_FIGS) $(NOBS_FIGS)
+	rm -f $(CENTER_FIGS) $(LMC_FIGS) $(CENTER5P_FIGS) $(NOBS_FIGS)
 	rm -f $(LMCFRAC_FIGS) $(CENTERFRAC_FIGS)
 	rm -f $(MONTAGE_FIGS) $(OTHER_FIGS)
 
@@ -90,7 +100,7 @@ sky-dr34.png: sky.fits stilts
                  auxmap=gnuplot auxmin=1.0 auxmax=2.01 auxfunc=log auxcrowd=.5 \
                  auxlabel='ratio of DR4 to DR3 sources' \
                  layer=healpix degrade=0 healpix=hpx8 datalevel=8 \
-                 value=nsrc_dr4*1.0/nsrc_dr3 \
+                 value=nsrc_dr4gs*1.0/nsrc_dr3 \
                  out=$@
 
 sky5p-dr34.png: sky.fits stilts
@@ -102,7 +112,7 @@ sky5p-dr34.png: sky.fits stilts
                  auxmap=gnuplot auxmin=1.0 auxmax=2.01 auxfunc=log auxcrowd=.5 \
                  auxlabel='ratio of DR4 to DR3 5+-parameter sources' \
                  layer=healpix degrade=0 healpix=hpx8 datalevel=8 \
-                 value=nsrc_5p_dr4*1.0/nsrc_5p_dr3 \
+                 value=nsrc_5p_dr4gs*1.0/nsrc_5p_dr3 \
                  out=$@
 
 center-dr34.png: center.fits stilts
@@ -115,7 +125,7 @@ center-dr34.png: center.fits stilts
                  auxlabel='ratio of DR4 to DR3 sources' \
                  layer=healpix healpix=hpx12 \
                  datalevel=12 degrade=1 combine=median \
-                 value=nsrc_dr4*1.0/nsrc_dr3 \
+                 value=nsrc_dr4gs*1.0/nsrc_dr3 \
                  out=$@
 
 center5p-dr34.png: center.fits stilts
@@ -128,11 +138,11 @@ center5p-dr34.png: center.fits stilts
                  auxlabel='ratio of DR4 to DR3 5+-parameter sources' \
                  layer=healpix healpix=hpx12 \
                  datalevel=12 degrade=1 combine=median \
-                 value=nsrc_5p_dr4*1.0/nsrc_5p_dr3 \
+                 value=nsrc_5p_dr4gs*1.0/nsrc_5p_dr3 \
                  out=$@
                
 $(CENTER_FIGS): center.fits stilts
-	dr=`echo $@ | sed -e's/.*\(dr.\).*/\1/'`; \
+	dr=$(DR_FROM_TARGET_FIG); \
 	./stilts plot2sky \
                in=center.fits \
                viewsys=galactic clon=0 clat=0 radius=10 \
@@ -145,8 +155,22 @@ $(CENTER_FIGS): center.fits stilts
                datalevel=12 degrade=2 combine=median datasys=equatorial \
                out=$@
 
+$(LMC_FIGS): lmc.fits stilts
+	dr=$(DR_FROM_TARGET_FIG); \
+        ./stilts plot2sky \
+                 in=lmc.fits \
+                 viewsys=galactic  clon=280 clat=-33 radius=1.8 \
+                 sex=false scalebar=false grid=false \
+                 legend=true legpos=0.9,0.9 leglabel=$$dr \
+                 xpix=500 ypix=500 \
+                 auxmap=ember auxfunc=log auxmin=100 auxmax=1800 \
+                 auxlabel='sources per square arcminute' \
+                 layer=healpix healpix=hpx12 value=density_$$dr \
+                 datalevel=12 degrade=0 combine=median datasys=equatorial \
+                 out=$@
+
 $(CENTER5P_FIGS): center.fits stilts
-	dr=`echo $@ | sed -e's/.*\(dr.\).*/\1/'`; \
+	dr=$(DR_FROM_TARGET_FIG); \
         degrade=`test $$dr = dr1 && echo 4 || echo 2`; \
 	./stilts plot2sky \
                in=center.fits \
@@ -161,7 +185,7 @@ $(CENTER5P_FIGS): center.fits stilts
                out=$@
 
 $(NOBS_FIGS): sky.fits stilts
-	dr=`echo $@ | sed -e's/.*\(dr.\).*/\1/'`; \
+	dr=$(DR_FROM_TARGET_FIG); \
         ./stilts plot2sky \
                in=sky.fits \
                xpix=600 ypix=270 \
@@ -174,7 +198,7 @@ $(NOBS_FIGS): sky.fits stilts
                out=$@
 
 $(LMCFRAC_FIGS): lmc.fits stilts
-	dr=`echo $@ | sed -e's/.*\(dr.\).*/\1/'`; \
+	dr=$(DR_FROM_TARGET_FIG); \
         degrade=`test $$dr = dr1 && echo 5 || echo 2`; \
         ./stilts plot2sky \
                in=lmc.fits \
@@ -190,7 +214,7 @@ $(LMCFRAC_FIGS): lmc.fits stilts
                out=$@
 
 $(CENTERFRAC_FIGS): center.fits stilts
-	dr=`echo $@ | sed -e's/.*\(dr.\).*/\1/'`; \
+	dr=$(DR_FROM_TARGET_FIG); \
         degrade=`test $$dr = dr1 && echo 5 || echo 2`; \
         ./stilts plot2sky \
                in=center.fits \
@@ -206,28 +230,33 @@ $(CENTERFRAC_FIGS): center.fits stilts
                out=$@
 
 center.png: $(CENTER_FIGS)
-	$(CONVERT) \( center-dr1.png center-dr2.png +append \) \
-                   \( center-dr3.png center-dr4.png +append \) \
+	$(CONVERT) \( center-$(F1).png center-$(F2).png +append \) \
+                   \( center-$(F3).png center-$(F4).png +append \) \
+                   -append $@
+
+lmc.png: $(LMC_FIGS)
+	$(CONVERT) \( lmc-$(F1).png lmc-$(F2).png +append \) \
+                   \( lmc-$(F3).png lmc-$(F4).png +append \) \
                    -append $@
 
 center5p.png: $(CENTER5P_FIGS)
-	$(CONVERT) \( center5p-dr1.png center5p-dr2.png +append \) \
-                   \( center5p-dr3.png center5p-dr4.png +append \) \
+	$(CONVERT) \( center5p-$(F1).png center5p-$(F2).png +append \) \
+                   \( center5p-$(F3).png center5p-$(F4).png +append \) \
                    -append $@
 
 nobs.png: $(NOBS_FIGS)
-	$(CONVERT) \( nobs-dr1.png nobs-dr2.png +append \) \
-                   \( nobs-dr3.png nobs-dr4.png +append \) \
+	$(CONVERT) \( nobs-$(F1).png nobs-$(F2).png +append \) \
+                   \( nobs-$(F3).png nobs-$(F4).png +append \) \
                    -append $@
 
 lmcfrac.png: $(LMCFRAC_FIGS)
-	$(CONVERT) \( lmcfrac-dr1.png lmcfrac-dr2.png +append \) \
-                   \( lmcfrac-dr3.png lmcfrac-dr4.png +append \) \
+	$(CONVERT) \( lmcfrac-$(F1).png lmcfrac-$(F2).png +append \) \
+                   \( lmcfrac-$(F3).png lmcfrac-$(F4).png +append \) \
                    -append $@
 
 centerfrac.png: $(CENTERFRAC_FIGS)
-	$(CONVERT) \( centerfrac-dr1.png centerfrac-dr2.png +append \) \
-                   \( centerfrac-dr3.png centerfrac-dr4.png +append \) \
+	$(CONVERT) \( centerfrac-$(F1).png centerfrac-$(F2).png +append \) \
+                   \( centerfrac-$(F3).png centerfrac-$(F4).png +append \) \
                    -append $@
 
 
