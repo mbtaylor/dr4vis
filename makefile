@@ -26,21 +26,22 @@ MONTAGE_FIGS = center.png center5p.png nobs.png lmcfrac.png centerfrac.png
 OTHER_FIGS = sky-dr34.png sky5p-dr34.png center-dr34.png center5p-dr34.png
 
 CENTER_FIGS = center-dr1.png center-dr2.png center-dr3.png \
-              center-dr4gs.png center-dr4as.png center-dr4ncf.png
+              center-dr4gs.png center-dr4asq0.png
 CENTER5P_FIGS = center5p-dr1.png center5p-dr2.png center5p-dr3.png \
-                center5p-dr4gs.png center5p-dr4as.png
+                center5p-dr4gs.png center5p-dr4asq0.png
 CENTERFRAC_FIGS = centerfrac-dr1.png centerfrac-dr2.png centerfrac-dr3.png \
-                  centerfrac-dr4gs.png centerfrac-dr4as.png
-NOBS_FIGS = nobs-dr1.png nobs-dr2.png nobs-dr3.png nobs-dr4gs.png nobs-dr4as.png
-LMC_FIGS = lmc-dr1.png lmc-dr2.png lmc-dr3.png lmc-dr4gs.png lmc-dr4as.png
+                  centerfrac-dr4gs.png centerfrac-dr4asq0.png
+NOBS_FIGS = nobs-dr1.png nobs-dr2.png nobs-dr3.png \
+            nobs-dr4gs.png nobs-dr4asq0.png
 SMC_FIGS = smc-dr1.png smc-dr2.png smc-dr3.png smc-dr4gs.png
+LMC_FIGS = lmc-dr1.png lmc-dr2.png lmc-dr3.png lmc-dr4gs.png lmc-dr4asq0.png
 LMCFRAC_FIGS = lmcfrac-dr1.png lmcfrac-dr2.png lmcfrac-dr3.png \
-               lmcfrac-dr4gs.png lmcfrac-dr4as.png
+               lmcfrac-dr4gs.png lmcfrac-dr4asq0.png
 
-F1 = dr1
-F2 = dr2
-F3 = dr3
-F4 = dr4gs
+F1 = dr2
+F2 = dr3
+F3 = dr4gs
+F4 = dr4asq0
 
 DR_FROM_TARGET_FIG = `echo $@ | sed -e's/.*\(dr[1234][a-z0]*\).*/\1/'`
 
@@ -265,8 +266,8 @@ center5p.png: $(CENTER5P_FIGS)
                    -append $@
 
 nobs.png: $(NOBS_FIGS)
-	$(CONVERT) \( nobs-$(F1).png nobs-$(F2).png +append \) \
-                   \( nobs-$(F3).png nobs-$(F4).png +append \) \
+	$(CONVERT) \( nobs-dr1.png nobs-dr2.png +append \) \
+                   \( nobs-dr3.png nobs-dr4gs.png +append \) \
                    -append $@
 
 lmcfrac.png: $(LMCFRAC_FIGS)
@@ -277,12 +278,6 @@ lmcfrac.png: $(LMCFRAC_FIGS)
 centerfrac.png: $(CENTERFRAC_FIGS)
 	$(CONVERT) \( centerfrac-$(F1).png centerfrac-$(F2).png +append \) \
                    \( centerfrac-$(F3).png centerfrac-$(F4).png +append \) \
-                   -append $@
-
-center6.png: $(CENTER_FIGS)
-	$(CONVERT) \( center-dr1.png center-dr2.png +append \) \
-                   \( center-dr3.png center-dr4gs.png +append \) \
-                   \( center-dr4as.png center-dr4ncf.png +append \) \
                    -append $@
 
 
