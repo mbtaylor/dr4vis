@@ -5,6 +5,7 @@ usage="\nUsage: $0: -name name [-where txt] [-[no]sync] [-stilts stilts-cmd]\n"
 stilts=stilts
 where=
 name=
+authall=
 sync=0
 
 while test "$1"
@@ -27,6 +28,10 @@ do
    then
       shift
       sync=0
+   elif [ "$1" = "-authall" ]
+   then
+      shift
+      authall=1
    elif [ "$1" = "-stilts" -a -n "$2" ]
    then
       shift
@@ -57,11 +62,15 @@ fi
 
 opstap=https://gea.esac.esa.int/tap-server/tap
 pretap=https://geapre.esac.esa.int/tap-server/tap
+authprops="-Dauth.username=@username -Dauth.password=@password"
+authparam="auth=true"
+
 
 # The TO_DOUBLEs here are to avoid cryptic "underflow" errors reported
 # for dr4int6 - see C9GACS-1094.  It sounds like these will disappear
 # in the final DR4 release?
-cols="source_id, ra, dec, parallax, pmra, pmdec, pm, \
+cols="source_id, ra, dec, parallax, pmra, pmdec,
+      SQRT(pmra*pmra+pmdec*pmdec) AS pm, \
       SQRT(TO_DOUBLE(ra_error)*TO_DOUBLE(ra_error) + \
            TO_DOUBLE(dec_error)*TO_DOUBLE(dec_error)) AS pos_error, \
       SQRT(TO_DOUBLE(pmra_error)*TO_DOUBLE(pmra_error) + \
@@ -72,14 +81,24 @@ mkdir -p $name
 
 for dr in dr1 dr2 dr3
 do
+   if [ "$authall" = "1" ]
+   then 
+      authprops123=$authprops
+      authparam123=$authparam
+   else
+      authprops123=
+      authparam123=
+   fi
    table=gaia$dr.gaia_source
    file=$name/$name-$dr.fits
    echo $file
    if [ ! -e $file ]
    then
-      $stilts -bench tapquery $syncparams tapurl=$opstap \
+      $stilts $authprops123 -bench tapquery $authparam \
+              $syncparams tapurl=$opstap \
               adql="SELECT $cols FROM $table WHERE $where" \
               ocmd="tablename $name-$dr" \
+              ocmd='addcol has5p pm>=0' \
               out=$file
    fi
 done
@@ -89,10 +108,11 @@ file=$name/$name-dr4.fits
 if [ ! -e $file ]
 then
    echo $file
-   $stilts -Dauth.username=@username -Dauth.password=@password -bench \
-           tapquery auth=true $syncparams tapurl=$pretap \
+   $stilts $authprops -bench \
+           tapquery $authparam $syncparams tapurl=$pretap \
            adql="SELECT $cols FROM $table WHERE $where" \
            ocmd="tablename $name-dr4" \
+           ocmd='addcol has5p pm>=0' \
            out=$file
 fi
 
