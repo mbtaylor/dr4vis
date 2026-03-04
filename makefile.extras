@@ -2,23 +2,7 @@
 SCHEMA = user_dr4int6
 STILTS = ./stilts
 
-cfregions.fits: stilts
-	$(STILTS) -Dauth.username=@username -Dauth.password=@password \
-               tapquery auth=true \
-                        sync=true \
-                        tapurl=https://geapre.esac.esa.int/tap-server/tap \
-                        adql="select region_name, ra, dec, nsrc, nimg \
-                              from (select region_name, avg(ra) as ra, \
-                                    avg(dec) as dec, count(*) as nsrc \
-                                    from user_dr4int4.crowded_field_source \
-                                    group by region_name) as s \
-                              join (select region_name, count(*) as nimg \
-                                 from user_dr4int4.crowded_field_image_summary \
-                                    group by region_name) as f \
-                              using (region_name)" \
-                        out=$@
-
-cf.fits: stilts
+cf-sources.fits: stilts
 	$(STILTS) -Dauth.username=@username -Dauth.password=@password \
                tapquery auth=true \
                         tapurl=https://geapre.esac.esa.int/tap-server/tap \
@@ -67,21 +51,4 @@ baade-sample-pairs.fits: stilts baade-sample.fits
                ocmd="addcol -units mas dist \
                      skyDistanceDegrees(ra_1,dec_1,ra_2,dec_2)*3600*1000" \
                out=$@
-
-# Not present in dr4int6?
-crowded_field_coverage_map.fits: stilts
-	$(STILTS) -Dauth.username=@username -Dauth.password=@password \
-               tapquery auth=true \
-                        tapurl=https://geapre.esac.esa.int/tap-server/tap \
-                        sync=false \
-                        adql="select * from user_dr4int4.$(@:.fits=)" \
-                        out=$@
-
-cfmocs.vot: crowded_field_coverage_map.fits
-	stilts tgroup in=crowded_field_coverage_map.fits \
-                      keys='region_name healpix_level' \
-                      aggcols='(long)healpix_id;array;ipixs' \
-                      ocmd="addcol -ucd meta.coverage -xtype moc moc \
-                            asciiMocTiles(healpix_level,ipixs)" \
-                      out=$@
 

@@ -21,7 +21,7 @@ CONVERT = convert
 # Some kind of image viewing command, used only for view target.
 VIEW = eog
 
-DATA_FILES = center.fits sky.fits smc.fits lmc.fits
+DATA_FILES = center.fits sky.fits smc.fits lmc.fits cfregions.fits
 MONTAGE_FIGS = center.png center5p.png nobs.png lmcfrac.png centerfrac.png
 OTHER_FIGS = sky-dr34.png sky5p-dr34.png center-dr34.png center5p-dr34.png
 
@@ -77,16 +77,17 @@ view: build
 clean:
 	rm -f $(CENTER_FIGS) $(LMC_FIGS) $(CENTER5P_FIGS) $(NOBS_FIGS)
 	rm -f $(LMCFRAC_FIGS) $(CENTERFRAC_FIGS)
-	rm -f $(MONTAGE_FIGS) $(OTHER_FIGS)
+	rm -f $(MONTAGE_FIGS) $(OTHER_FIGS) cfregions.fits cfmocs.fits
 
 veryclean: clean
 	rm -f stilts.jar stilts
 	rm -f $(DATA_FILES)
+	rm -f crowded_field_coverage_map.fits cfstats.fits
 	rm -rf $(DATA_FILES:.fits=)
 
-# STILTS version 3.5 works, so should later versions
+# Post-v3.5-4 stilts only required for indicesToMocAscii function
 stilts.jar:
-	curl -OL http://www.starlink.ac.uk/stilts/stilts.jar
+	curl -OL https://www.star.bristol.ac.uk/mbt/releases/stilts/pre/$@
 
 stilts: stilts.jar
 	unzip stilts.jar stilts
@@ -279,5 +280,57 @@ centerfrac.png: $(CENTERFRAC_FIGS)
 	$(CONVERT) \( centerfrac-$(F1).png centerfrac-$(F2).png +append \) \
                    \( centerfrac-$(F3).png centerfrac-$(F4).png +append \) \
                    -append $@
+
+cfview: cfregions.fits stilts
+	./stilts plot2sky in=cfregions.fits \
+                          viewsys=galactic datasys=equatorial \
+                          area=moc \
+                          layer1=area \
+                          layer2=arealabel label2=region_name color2=black
+
+cfregions.fits: stilts cfstats.fits cfmocs.fits
+	./stilts tmatch2 in1=cfstats.fits in2=cfmocs.fits \
+                         matcher=exact values1=region_name values2=region_name \
+                         progress=none \
+                         suffix1= suffix2=_2 ocmd='delcols *_2' \
+                         ocmd='sort -down nsrc' \
+                         out=$@
+
+cfstats.fits: stilts
+	./stilts -Dauth.username=@username -Dauth.password=@password \
+               tapquery auth=true \
+                        sync=true \
+                        tapurl=https://geapre.esac.esa.int/tap-server/tap \
+                        adql="select region_name, ra, dec, nsrc, nimg \
+                              from (select region_name, avg(ra) as ra, \
+                                    avg(dec) as dec, count(*) as nsrc \
+                                    from user_dr4int4.crowded_field_source \
+                                    group by region_name) as s \
+                              join (select region_name, count(*) as nimg \
+                                 from user_dr4int4.crowded_field_image_summary \
+                                    group by region_name) as f \
+                              using (region_name)" \
+                        out=$@
+
+cfmocs.fits: crowded_field_coverage_map.fits stilts
+	./stilts tgroup in=crowded_field_coverage_map.fits \
+                        keys='region_name healpix_level' \
+                        aggcols='(long)healpix_id;array;ipixs' \
+                        ocmd="addcol -ucd meta.coverage -xtype moc moc \
+                              indicesToMocAscii(healpix_level,ipixs)" \
+                        ocmd='delcols healpix_level' \
+                        ocmd='delcols ipixs' \
+                        ofmt='fits(var=true,primary=basic)' \
+                        out=$@
+
+# Not present in dr4int6?
+crowded_field_coverage_map.fits: stilts
+	./stilts -Dauth.username=@username -Dauth.password=@password \
+               tapquery auth=true \
+                        tapurl=https://geapre.esac.esa.int/tap-server/tap \
+                        sync=false \
+                        adql="select * from user_dr4int4.$(@:.fits=)" \
+                        out=$@
+
 
 
