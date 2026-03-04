@@ -33,6 +33,7 @@ CENTERFRAC_FIGS = centerfrac-dr1.png centerfrac-dr2.png centerfrac-dr3.png \
                   centerfrac-dr4gs.png centerfrac-dr4as.png
 NOBS_FIGS = nobs-dr1.png nobs-dr2.png nobs-dr3.png nobs-dr4gs.png nobs-dr4as.png
 LMC_FIGS = lmc-dr1.png lmc-dr2.png lmc-dr3.png lmc-dr4gs.png lmc-dr4as.png
+SMC_FIGS = smc-dr1.png smc-dr2.png smc-dr3.png smc-dr4gs.png
 LMCFRAC_FIGS = lmcfrac-dr1.png lmcfrac-dr2.png lmcfrac-dr3.png \
                lmcfrac-dr4gs.png lmcfrac-dr4as.png
 
@@ -41,7 +42,7 @@ F2 = dr2
 F3 = dr3
 F4 = dr4gs
 
-DR_FROM_TARGET_FIG = `echo $@ | sed -e's/.*\(dr[1234][a-z]*\).*/\1/'`
+DR_FROM_TARGET_FIG = `echo $@ | sed -e's/.*\(dr[1234][a-z0]*\).*/\1/'`
 
 build: $(MONTAGE_FIGS) $(OTHER_FIGS)
 
@@ -62,7 +63,7 @@ lmc.fits: stilts
            -where "l BETWEEN 265 AND 295 AND b BETWEEN -43 AND -21"
 
 smc.fits: stilts
-	sh drmap.sh -stilts ./stilts -name smc -hpx 12 \
+	sh drcat.sh -stilts ./stilts -name smc -authall \
            -where "l BETWEEN 290 AND 315 AND b BETWEEN -50 AND -38"
 
 m31.fits: stilts
@@ -155,6 +156,20 @@ $(CENTER_FIGS): center.fits stilts
                datalevel=12 degrade=2 combine=median datasys=equatorial \
                out=$@
 
+$(SMC_FIGS): smc.fits stilts
+	dr=$(DR_FROM_TARGET_FIG); \
+        ./stilts plot2sky \
+                 in=smc.fits#smc-$$dr \
+                 viewsys=galactic clon=302.6 clat=-44.2 radius=1.0 \
+                 sex=false scalebar=false grid=false \
+                 legend=true legpos=0.9,0.9 leglabel=$$dr \
+                 xpix=500 ypix=400 \
+                 auxmap=cubehelix auxfunc=log auxmin=3 auxmax=900 \
+                 auxlabel='density' \
+                 layer=mark lon=ra lat=dec shading=weighted combine=count \
+                 datasys=equatorial \
+                 out=$@
+
 $(LMC_FIGS): lmc.fits stilts
 	dr=$(DR_FROM_TARGET_FIG); \
         ./stilts plot2sky \
@@ -232,6 +247,11 @@ $(CENTERFRAC_FIGS): center.fits stilts
 center.png: $(CENTER_FIGS)
 	$(CONVERT) \( center-$(F1).png center-$(F2).png +append \) \
                    \( center-$(F3).png center-$(F4).png +append \) \
+                   -append $@
+
+smc.png: $(SMC_FIGS)
+	$(CONVERT) \( smc-$(F1).png smc-$(F2).png +append \) \
+                   \( smc-$(F3).png smc-$(F4).png +append \) \
                    -append $@
 
 lmc.png: $(LMC_FIGS)

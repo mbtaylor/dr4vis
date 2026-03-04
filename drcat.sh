@@ -103,21 +103,22 @@ do
    fi
 done
 
+dr4name=dr4gs
 table=user_dr4int6.gaia_source
-file=$name/$name-dr4.fits
+file=$name/$name-$dr4name.fits
 if [ ! -e $file ]
 then
    echo $file
    $stilts $authprops -bench \
            tapquery $authparam $syncparams tapurl=$pretap \
            adql="SELECT $cols FROM $table WHERE $where" \
-           ocmd="tablename $name-dr4" \
+           ocmd="tablename $name-$dr4name" \
            ocmd='addcol has5p pm>=0' \
            out=$file
 fi
 
 echo $name.fits
 $stilts tmulti in=$name/$name-dr1.fits in=$name/$name-dr2.fits \
-               in=$name/$name-dr3.fits in=$name/$name-dr4.fits \
+               in=$name/$name-dr3.fits in=$name/$name-$dr4name.fits \
                ofmt="fits(primary=basic)" out=$name.fits
 
