@@ -26,7 +26,7 @@ MONTAGE_FIGS = center.png center5p.png nobs.png lmcfrac.png centerfrac.png
 OTHER_FIGS = sky-dr34.png sky5p-dr34.png center-dr34.png center5p-dr34.png
 
 CENTER_FIGS = center-dr1.png center-dr2.png center-dr3.png \
-              center-dr4gs.png center-dr4as.png
+              center-dr4gs.png center-dr4as.png center-dr4ncf.png
 CENTER5P_FIGS = center5p-dr1.png center5p-dr2.png center5p-dr3.png \
                 center5p-dr4gs.png center5p-dr4as.png
 CENTERFRAC_FIGS = centerfrac-dr1.png centerfrac-dr2.png centerfrac-dr3.png \
@@ -55,7 +55,7 @@ sky.fits: stilts
 	sh drmap.sh -stilts ./stilts -name sky -hpx 8
 
 sky10.fits: stilts
-	sh drmap.sh -stilts "./stilts -Xmx16G" -name sky10 -authall -hpx 10
+	sh drmap.sh -stilts "./stilts -Xmx20G" -name sky10 -authall -hpx 10
 
 lmc.fits: stilts
 	sh drmap.sh -stilts ./stilts -name lmc -hpx 12 \
@@ -257,6 +257,12 @@ lmcfrac.png: $(LMCFRAC_FIGS)
 centerfrac.png: $(CENTERFRAC_FIGS)
 	$(CONVERT) \( centerfrac-$(F1).png centerfrac-$(F2).png +append \) \
                    \( centerfrac-$(F3).png centerfrac-$(F4).png +append \) \
+                   -append $@
+
+center6.png: $(CENTER_FIGS)
+	$(CONVERT) \( center-dr1.png center-dr2.png +append \) \
+                   \( center-dr3.png center-dr4gs.png +append \) \
+                   \( center-dr4as.png center-dr4ncf.png +append \) \
                    -append $@
 
 

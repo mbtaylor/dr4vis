@@ -149,23 +149,44 @@ do
    fi
 done
 
+filencf=$name/$name-2p-dr4ncf.fits
+echo $filencf
+if [ ! -e $filencf ]
+then
+   notcf="astrometry_origin != 'crowded_field_source'"
+   if [ -n "$where" ]
+   then
+      wherencf="WHERE $where AND $notcf"
+   else
+      wherencf="WHERE $notcf"
+   fi
+   $stilts $authprops -bench \
+           tapquery $authparam sync=false delete=always tapurl=$pretap \
+           adql="SELECT $cols2p FROM user_dr4int6.gaia_source $wherencf \
+                 $grouping" \
+           ocmd="$densecmd" \
+           out=$filencf
+fi
+
 $stilts tmatchn \
-        multimode=pairs nin=10 iref=4 matcher=exact \
+        multimode=pairs nin=11 iref=4 matcher=exact \
         in1=$name/$name-2p-dr1.fits suffix1=_dr1 values1=hpx$hpx \
         in2=$name/$name-2p-dr2.fits suffix2=_dr2 values2=hpx$hpx \
         in3=$name/$name-2p-dr3.fits suffix3=_dr3 values3=hpx$hpx \
         in4=$name/$name-2p-dr4gs.fits suffix4=_dr4gs values4=hpx$hpx \
         in5=$name/$name-2p-dr4as.fits suffix5=_dr4as values5=hpx$hpx \
-        in6=$name/$name-5p-dr1.fits suffix6=_5p_dr1 values6=hpx$hpx \
-        in7=$name/$name-5p-dr2.fits suffix7=_5p_dr2 values7=hpx$hpx \
-        in8=$name/$name-5p-dr3.fits suffix8=_5p_dr3 values8=hpx$hpx \
-        in9=$name/$name-5p-dr4gs.fits suffix9=_5p_dr4gs values9=hpx$hpx \
-        in10=$name/$name-5p-dr4as.fits suffix10=_5p_dr4as values10=hpx$hpx \
+        in6=$name/$name-2p-dr4ncf.fits suffix6=_dr4ncf values6=hpx$hpx \
+        in7=$name/$name-5p-dr1.fits suffix7=_5p_dr1 values7=hpx$hpx \
+        in8=$name/$name-5p-dr2.fits suffix8=_5p_dr2 values8=hpx$hpx \
+        in9=$name/$name-5p-dr3.fits suffix9=_5p_dr3 values9=hpx$hpx \
+        in10=$name/$name-5p-dr4gs.fits suffix10=_5p_dr4gs values10=hpx$hpx \
+        in11=$name/$name-5p-dr4as.fits suffix11=_5p_dr4as values11=hpx$hpx \
         icmd1='clearparams RELEASE' icmd2='clearparams RELEASE' \
         icmd3='clearparams RELEASE' icmd4='clearparams RELEASE' \
         icmd5='clearparams RELEASE' icmd6='clearparams RELEASE' \
         icmd7='clearparams RELEASE' icmd8='clearparams RELEASE' \
         icmd9='clearparams RELEASE' icmd10='clearparams RELEASE' \
+        icmd11='clearparams RELEASE' \
         ocmd="addcol -before 1 hpx$hpx hpx${hpx}_dr4gs" \
         ocmd="delcols hpx${hpx}_*" \
         ocmd="healpixmeta -level $hpx -column hpx$hpx -csys C -nested" \
