@@ -94,7 +94,7 @@ do
    echo $file
    if [ ! -e $file ]
    then
-      $stilts $authprops123 -bench tapquery $authparam \
+      $stilts $authprops123 -bench tapquery $authparam123 \
               $syncparams tapurl=$opstap \
               adql="SELECT $cols FROM $table WHERE $where" \
               ocmd="tablename $name-$dr" \
@@ -103,22 +103,43 @@ do
    fi
 done
 
-dr4name=dr4gs
-table=user_dr4int6.gaia_source
-file=$name/$name-$dr4name.fits
-if [ ! -e $file ]
-then
+for cft in gs asq0
+do
+   if [ $cft = gs ]
+   then
+      table=user_dr4int6.gaia_source
+      where4=$where
+   elif [ $cft = asq0 ]
+   then
+      table=user_dr4int6.all_source_astrometry
+      if [ -n "$where" ]
+      then
+          where4="$where AND quality_flag=0"
+      else
+          where4="quality_flag=0"
+      fi
+   else
+      echo "unknown dr4 variant $cft"
+      exit 1
+   fi
+   dr4name=dr4$cft
+   file=$name/$name-$dr4name.fits
    echo $file
-   $stilts $authprops -bench \
-           tapquery $authparam $syncparams tapurl=$pretap \
-           adql="SELECT $cols FROM $table WHERE $where" \
-           ocmd="tablename $name-$dr4name" \
-           ocmd='addcol has5p pm>=0' \
-           out=$file
-fi
+   if [ ! -e $file ]
+   then
+echo "SELECT $cols FROM $table WHERE $where4"
+      $stilts $authprops -bench \
+              tapquery $authparam $syncparams tapurl=$pretap \
+              adql="SELECT $cols FROM $table WHERE $where4" \
+              ocmd="tablename $name-$dr4name" \
+              ocmd='addcol has5p pm>=0' \
+              out=$file
+   fi
+done
 
 echo $name.fits
 $stilts tmulti in=$name/$name-dr1.fits in=$name/$name-dr2.fits \
-               in=$name/$name-dr3.fits in=$name/$name-$dr4name.fits \
+               in=$name/$name-dr3.fits \
+               in=$name/$name-dr4gs.fits in=$name/$name-dr4asq0.fits \
                ofmt="fits(primary=basic)" out=$name.fits
 

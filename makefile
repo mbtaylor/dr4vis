@@ -22,7 +22,8 @@ CONVERT = convert
 VIEW = eog
 
 DATA_FILES = center.fits sky.fits smc.fits lmc.fits cfregions.fits
-MONTAGE_FIGS = center.png center5p.png nobs.png lmcfrac.png centerfrac.png
+MONTAGE_FIGS = center.png center5p.png nobs.png lmcfrac.png centerfrac.png \
+               smc.png m31.png
 OTHER_FIGS = sky-dr34.png sky5p-dr34.png center-dr34.png center5p-dr34.png
 
 CENTER_FIGS = center-dr1.png center-dr2.png center-dr3.png \
@@ -34,6 +35,7 @@ CENTERFRAC_FIGS = centerfrac-dr1.png centerfrac-dr2.png centerfrac-dr3.png \
 NOBS_FIGS = nobs-dr1.png nobs-dr2.png nobs-dr3.png \
             nobs-dr4gs.png nobs-dr4asq0.png
 SMC_FIGS = smc-dr1.png smc-dr2.png smc-dr3.png smc-dr4gs.png
+M31_FIGS = m31-dr1.png m31-dr2.png m31-dr3.png m31-dr4gs.png
 LMC_FIGS = lmc-dr1.png lmc-dr2.png lmc-dr3.png lmc-dr4gs.png lmc-dr4asq0.png
 LMCFRAC_FIGS = lmcfrac-dr1.png lmcfrac-dr2.png lmcfrac-dr3.png \
                lmcfrac-dr4gs.png lmcfrac-dr4asq0.png
@@ -172,6 +174,20 @@ $(SMC_FIGS): smc.fits stilts
                  datasys=equatorial \
                  out=$@
 
+$(M31_FIGS): m31.fits stilts
+	dr=$(DR_FROM_TARGET_FIG); \
+        ./stilts plot2sky \
+                 in=m31.fits#m31-$$dr \
+                 clon=10.70 clat=41.29 radius=0.85 \
+                 xpix=500 ypix=550 \
+                 sex=false scalebar=false grid=false \
+                 legend=true legpos=0.9,0.9 leglabel=$$dr \
+                 auxfunc=log auxmin=1 auxmax=580 auxmap=cubehelix \
+                 auxvisible=true auxcrowd=0.8 auxlabel=density \
+                 layer=mark lon=ra lat=dec \
+                            shading=weighted combine=count \
+                 out=$@
+
 $(LMC_FIGS): lmc.fits stilts
 	dr=$(DR_FROM_TARGET_FIG); \
         ./stilts plot2sky \
@@ -252,8 +268,13 @@ center.png: $(CENTER_FIGS)
                    -append $@
 
 smc.png: $(SMC_FIGS)
-	$(CONVERT) \( smc-$(F1).png smc-$(F2).png +append \) \
-                   \( smc-$(F3).png smc-$(F4).png +append \) \
+	$(CONVERT) \( smc-dr1.png smc-dr2.png +append \) \
+                   \( smc-dr3.png smc-dr4gs.png +append \) \
+                   -append $@
+
+m31.png: $(M31_FIGS)
+	$(CONVERT) \( m31-dr1.png m31-dr2.png +append \) \
+                   \( m31-dr3.png m31-dr4gs.png +append \) \
                    -append $@
 
 lmc.png: $(LMC_FIGS)
