@@ -11,7 +11,7 @@ cf-sources.fits: stilts
                               where astrometry_origin='crowded_field_source'" \
                         out=$@
 
-baade.fits: stilts
+baade-square.fits: stilts
 	$(STILTS) -Dauth.username=@username -Dauth.password=@password \
                tapquery auth=true \
                         tapurl=https://geapre.esac.esa.int/tap-server/tap \
@@ -23,9 +23,9 @@ baade.fits: stilts
                         maxrec=16000000 \
                         out=$@
 
-baade-pairs.fits: stilts baade.fits
+baade-pairs.fits: stilts baade-square.fits
 	$(STILTS) tmatch1 \
-               in=baade.fits \
+               in=baade-square.fits \
                matcher=sky params=0.1 values='ra dec' \
                action=wide2 \
                ocmd="addcol -units mas dist \

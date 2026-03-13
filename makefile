@@ -23,7 +23,7 @@ VIEW = eog
 
 DATA_FILES = center.fits sky.fits smc.fits lmc.fits cfregions.fits
 MONTAGE_FIGS = center.png center5p.png nobs.png lmcfrac.png centerfrac.png \
-               smc.png m31.png
+               smc.png m31.png baade.png
 OTHER_FIGS = sky-dr34.png sky5p-dr34.png center-dr34.png center5p-dr34.png
 
 CENTER_FIGS = center-dr1.png center-dr2.png center-dr3.png \
@@ -36,6 +36,8 @@ NOBS_FIGS = nobs-dr1.png nobs-dr2.png nobs-dr3.png \
             nobs-dr4gs.png nobs-dr4asq0.png
 SMC_FIGS = smc-dr1.png smc-dr2.png smc-dr3.png smc-dr4gs.png
 M31_FIGS = m31-dr1.png m31-dr2.png m31-dr3.png m31-dr4gs.png
+BAADE_FIGS = baade-dr1.png baade-dr2.png baade-dr3.png \
+             baade-dr4gs.png baade-dr4asq0.png
 LMC_FIGS = lmc-dr1.png lmc-dr2.png lmc-dr3.png lmc-dr4gs.png lmc-dr4asq0.png
 LMCFRAC_FIGS = lmcfrac-dr1.png lmcfrac-dr2.png lmcfrac-dr3.png \
                lmcfrac-dr4gs.png lmcfrac-dr4asq0.png
@@ -47,7 +49,7 @@ F4 = dr4asq0
 
 DR_FROM_TARGET_FIG = `echo $@ | sed -e's/.*\(dr[1234][a-z0]*\).*/\1/'`
 
-build: $(MONTAGE_FIGS) $(OTHER_FIGS)
+build: $(MONTAGE_FIGS) $(OTHER_FIGS) cfregions.fits
 
 data: $(DATA_FILES)
 
@@ -72,6 +74,10 @@ smc.fits: stilts
 m31.fits: stilts
 	sh drcat.sh -stilts ./stilts -name m31 -sync \
            -where "ra BETWEEN 9.2 AND 12.2 AND dec BETWEEN 39.8 AND 42.8"
+
+baade.fits: stilts
+	sh drcat.sh -stilts ./stilts -name baade -authall \
+           -where "DISTANCE(1.03, -3.93, l, b) < 0.75"
 
 view: build
 	$(VIEW) $(MONTAGE_FIGS) $(OTHER_FIGS)
@@ -188,6 +194,22 @@ $(M31_FIGS): m31.fits stilts
                             shading=weighted combine=count \
                  out=$@
 
+$(BAADE_FIGS): baade.fits stilts
+	dr=$(DR_FROM_TARGET_FIG); \
+        ./stilts plot2sky \
+                 in=baade.fits#baade-$$dr \
+                 viewsys=galactic \
+                 clon=1.03 clat=-3.93 radius=0.4 \
+                 xpix=500 ypix=400 \
+                 sex=false grid=false \
+                 legend=true legpos=0.9,0.9 leglabel=$$dr \
+                 layer=skydensity lon=ra lat=dec level=14 \
+                       combine=count-per-unit perunit=arcmin2 \
+                       datasys=equatorial \
+                 auxvisible=true auxmin=50 auxmax=5000 auxfunc=log \
+                 auxmap=cubehelix auxlabel="sources per square arcminute" \
+                 out=$@
+
 $(LMC_FIGS): lmc.fits stilts
 	dr=$(DR_FROM_TARGET_FIG); \
         ./stilts plot2sky \
@@ -300,6 +322,11 @@ lmcfrac.png: $(LMCFRAC_FIGS)
 centerfrac.png: $(CENTERFRAC_FIGS)
 	$(CONVERT) \( centerfrac-$(F1).png centerfrac-$(F2).png +append \) \
                    \( centerfrac-$(F3).png centerfrac-$(F4).png +append \) \
+                   -append $@
+
+baade.png: $(BAADE_FIGS)
+	$(CONVERT) \( baade-$(F1).png baade-$(F2).png +append \) \
+                   \( baade-$(F3).png baade-$(F4).png +append \) \
                    -append $@
 
 cfview: cfregions.fits stilts
