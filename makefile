@@ -44,8 +44,8 @@ LMCFRAC_FIGS = lmcfrac-dr1.png lmcfrac-dr2.png lmcfrac-dr3.png \
 
 F1 = dr2
 F2 = dr3
-F3 = dr4gs
-F4 = dr4asq0
+F3 = dr4asq0
+F4 = dr4gs
 
 DR_FROM_TARGET_FIG = `echo $@ | sed -e's/.*\(dr[1234][a-z0]*\).*/\1/'`
 
@@ -171,7 +171,7 @@ $(SMC_FIGS): smc.fits stilts
         ./stilts plot2sky \
                  in=smc.fits#smc-$$dr \
                  viewsys=galactic clon=302.6 clat=-44.2 radius=1.0 \
-                 sex=false scalebar=false grid=false \
+                 sex=false scalebar=true grid=false \
                  legend=true legpos=0.9,0.9 leglabel=$$dr \
                  xpix=500 ypix=400 \
                  auxmap=cubehelix auxfunc=log auxmin=3 auxmax=900 \
@@ -186,7 +186,7 @@ $(M31_FIGS): m31.fits stilts
                  in=m31.fits#m31-$$dr \
                  clon=10.70 clat=41.29 radius=0.85 \
                  xpix=500 ypix=550 \
-                 sex=false scalebar=false grid=false \
+                 sex=false scalebar=true grid=false \
                  legend=true legpos=0.9,0.9 leglabel=$$dr \
                  auxfunc=log auxmin=1 auxmax=580 auxmap=cubehelix \
                  auxvisible=true auxcrowd=0.8 auxlabel=density \
@@ -206,7 +206,7 @@ $(BAADE_FIGS): baade.fits stilts
                  layer=skydensity lon=ra lat=dec level=14 \
                        combine=count-per-unit perunit=arcmin2 \
                        datasys=equatorial \
-                 auxvisible=true auxmin=50 auxmax=5000 auxfunc=log \
+                 auxvisible=true auxmin=48 auxmax=5100 auxfunc=log \
                  auxmap=cubehelix auxlabel="sources per square arcminute" \
                  out=$@
 
@@ -287,16 +287,25 @@ $(CENTERFRAC_FIGS): center.fits stilts
 center.png: $(CENTER_FIGS)
 	$(CONVERT) \( center-$(F1).png center-$(F2).png +append \) \
                    \( center-$(F3).png center-$(F4).png +append \) \
+                   -append \
+                   -pointsize 24 label:"Galactic Centre source density" \
+                   +swap -gravity Center \
                    -append $@
 
 smc.png: $(SMC_FIGS)
 	$(CONVERT) \( smc-dr1.png smc-dr2.png +append \) \
                    \( smc-dr3.png smc-dr4gs.png +append \) \
+                   -append \
+                   -pointsize 24 label:"SMC source density" \
+                   +swap -gravity Center \
                    -append $@
 
 m31.png: $(M31_FIGS)
 	$(CONVERT) \( m31-dr1.png m31-dr2.png +append \) \
                    \( m31-dr3.png m31-dr4gs.png +append \) \
+                   -append \
+                   -pointsize 24 label:"M31 source density" \
+                   +swap -gravity Center \
                    -append $@
 
 lmc.png: $(LMC_FIGS)
@@ -325,8 +334,11 @@ centerfrac.png: $(CENTERFRAC_FIGS)
                    -append $@
 
 baade.png: $(BAADE_FIGS)
-	$(CONVERT) \( baade-$(F1).png baade-$(F2).png +append \) \
-                   \( baade-$(F3).png baade-$(F4).png +append \) \
+	$(CONVERT) \( baade-dr1.png baade-dr2.png +append \) \
+                   \( baade-dr3.png baade-dr4gs.png +append \) \
+                   -append \
+                   -pointsize 24 label:"Baade's Window source density" \
+                   +swap -gravity Center \
                    -append $@
 
 cfview: cfregions.fits stilts
