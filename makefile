@@ -97,9 +97,8 @@ veryclean: clean
 	rm -f crowded_field_coverage_map.fits cfstats.fits
 	rm -rf $(DATA_FILES:.fits=)
 
-# Post-v3.5-4 stilts only required for indicesToMocAscii function
 stilts.jar:
-	curl -OL https://www.star.bristol.ac.uk/mbt/releases/stilts/pre/$@
+	curl -OL http://www.starlink.ac.uk/stilts/$@
 
 stilts: stilts.jar
 	unzip stilts.jar stilts
