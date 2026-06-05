@@ -21,7 +21,8 @@ CONVERT = convert
 # Some kind of image viewing command, used only for view target.
 VIEW = eog
 
-DATA_FILES = center.fits sky.fits smc.fits lmc.fits cfregions.fits
+DATA_FILES = center.fits sky.fits smc.fits lmc.fits cfregions.fits \
+             m31.fits baade.fits
 MONTAGE_FIGS = center.png center5p.png nobs.png lmcfrac.png centerfrac.png \
                smc.png m31.png baade.png
 OTHER_FIGS = sky-dr34.png sky5p-dr34.png center-dr34.png center5p-dr34.png
@@ -84,7 +85,8 @@ view: build
 
 clean:
 	rm -f $(CENTER_FIGS) $(LMC_FIGS) $(CENTER5P_FIGS) $(NOBS_FIGS)
-	rm -f $(LMCFRAC_FIGS) $(CENTERFRAC_FIGS)
+	rm -f $(LMCFRAC_FIGS) $(CENTERFRAC_FIGS) $(SMC_FIGS) $(M31_FIGS)
+	rm -f $(BAADE_FIGS)
 	rm -f $(MONTAGE_FIGS) $(OTHER_FIGS) cfregions.fits cfmocs.fits
 
 veryclean: clean
