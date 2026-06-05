@@ -7,6 +7,7 @@ where=
 name=
 authall=
 sync=0
+dr4schema=user_dr4rc3
 
 while test "$1"
 do
@@ -107,11 +108,11 @@ for cft in gs asq0
 do
    if [ $cft = gs ]
    then
-      table=user_dr4int6.gaia_source
+      table=${dr4schema}.gaia_source
       where4=$where
    elif [ $cft = asq0 ]
    then
-      table=user_dr4int6.all_source_astrometry
+      table=${dr4schema}.all_source_astrometry
       if [ -n "$where" ]
       then
           where4="$where AND quality_flag=0"

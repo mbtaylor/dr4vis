@@ -14,6 +14,8 @@
 # It's OK to interrupt it or lose the network connection: it should
 # generally pick up from where it left off.
 
+DR4_SCHEMA = user_dr4rc3
+
 # This is the ImageMagick convert command.  Depending on your ImageMagick
 # version you might need to set it to "magick" instead.
 CONVERT = convert
@@ -366,10 +368,10 @@ cfstats.fits: stilts
                         adql="select region_name, ra, dec, nsrc, nimg \
                               from (select region_name, avg(ra) as ra, \
                                     avg(dec) as dec, count(*) as nsrc \
-                                    from user_dr4int4.crowded_field_source \
+                                    from $(DR4_SCHEMA).crowded_field_source \
                                     group by region_name) as s \
                               join (select region_name, count(*) as nimg \
-                                 from user_dr4int4.crowded_field_image_summary \
+                                 from $(DR4_SCHEMA).crowded_field_image_summary\
                                     group by region_name) as f \
                               using (region_name)" \
                         out=$@
@@ -385,13 +387,12 @@ cfmocs.fits: crowded_field_coverage_map.fits stilts
                         ofmt='fits(var=true,primary=basic)' \
                         out=$@
 
-# Not present in dr4int6?
 crowded_field_coverage_map.fits: stilts
 	./stilts -Dauth.username=@username -Dauth.password=@password \
                tapquery auth=true \
                         tapurl=https://geapre.esac.esa.int/tap-server/tap \
                         sync=false \
-                        adql="select * from user_dr4int4.$(@:.fits=)" \
+                        adql="select * from $(DR4_SCHEMA).$(@:.fits=)" \
                         out=$@
 
 

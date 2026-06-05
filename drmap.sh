@@ -8,6 +8,7 @@ hpx=
 where=
 name=
 authall=
+dr4schema=user_dr4rc3
 
 while test "$1"
 do
@@ -123,11 +124,11 @@ for cft in gs asq0
 do
    if [ $cft = gs ]
    then
-      table=user_dr4int6.gaia_source
+      table=${dr4schema}.gaia_source
       where4=
    elif [ $cft = asq0 ]
    then
-      table=user_dr4int6.all_source_astrometry
+      table=${dr4schema}.all_source_astrometry
       where4="AND quality_flag=0"
    else
       echo "unknown dr4 variant"
