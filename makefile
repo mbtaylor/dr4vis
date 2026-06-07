@@ -45,9 +45,9 @@ LMC_FIGS = lmc-dr1.png lmc-dr2.png lmc-dr3.png lmc-dr4gs.png lmc-dr4asq0.png
 LMCFRAC_FIGS = lmcfrac-dr1.png lmcfrac-dr2.png lmcfrac-dr3.png \
                lmcfrac-dr4gs.png lmcfrac-dr4asq0.png
 
-F1 = dr2
-F2 = dr3
-F3 = dr4asq0
+F1 = dr1
+F2 = dr2
+F3 = dr3
 F4 = dr4gs
 
 DR_FROM_TARGET_FIG = `echo $@ | sed -e's/.*\(dr[1234][a-z0]*\).*/\1/'`
