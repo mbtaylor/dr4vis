@@ -51,6 +51,7 @@ F3 = dr4asq0
 F4 = dr4gs
 
 DR_FROM_TARGET_FIG = `echo $@ | sed -e's/.*\(dr[1234][a-z0]*\).*/\1/'`
+DR_LEGLABEL = `sh labelname.sh $$dr`
 
 build: $(MONTAGE_FIGS) $(OTHER_FIGS) cfregions.fits
 
@@ -161,7 +162,7 @@ $(CENTER_FIGS): center.fits stilts
                in=center.fits \
                viewsys=galactic clon=0 clat=0 radius=10 \
                sex=false scalebar=false \
-               legend=true legpos=0.9,0.9 leglabel=$$dr \
+               legend=true legpos=0.9,0.9 leglabel=$(DR_LEGLABEL) \
                xpix=600 ypix=400 \
                auxmap=ember auxclip=0,1 auxmin=0 auxmax=670 \
                auxlabel='sources per square arcminute' \
@@ -175,7 +176,7 @@ $(SMC_FIGS): smc.fits stilts
                  in=smc.fits#smc-$$dr \
                  viewsys=galactic clon=302.6 clat=-44.2 radius=1.0 \
                  sex=false scalebar=true grid=false \
-                 legend=true legpos=0.9,0.9 leglabel=$$dr \
+                 legend=true legpos=0.9,0.9 leglabel=$(DR_LEGLABEL) \
                  xpix=500 ypix=400 \
                  auxmap=cubehelix auxfunc=log auxmin=3 auxmax=900 \
                  auxlabel='density' \
@@ -190,7 +191,7 @@ $(M31_FIGS): m31.fits stilts
                  clon=10.70 clat=41.29 radius=0.85 \
                  xpix=500 ypix=550 \
                  sex=false scalebar=true grid=false \
-                 legend=true legpos=0.9,0.9 leglabel=$$dr \
+                 legend=true legpos=0.9,0.9 leglabel=$(DR_LEGLABEL) \
                  auxfunc=log auxmin=1 auxmax=580 auxmap=cubehelix \
                  auxvisible=true auxcrowd=0.8 auxlabel=density \
                  layer=mark lon=ra lat=dec \
@@ -205,7 +206,7 @@ $(BAADE_FIGS): baade.fits stilts
                  clon=1.03 clat=-3.93 radius=0.4 \
                  xpix=500 ypix=400 \
                  sex=false grid=false \
-                 legend=true legpos=0.9,0.9 leglabel=$$dr \
+                 legend=true legpos=0.9,0.9 leglabel=$(DR_LEGLABEL) \
                  layer=skydensity lon=ra lat=dec level=14 \
                        combine=count-per-unit perunit=arcmin2 \
                        datasys=equatorial \
@@ -219,7 +220,7 @@ $(LMC_FIGS): lmc.fits stilts
                  in=lmc.fits \
                  viewsys=galactic  clon=280 clat=-33 radius=1.8 \
                  sex=false scalebar=false grid=false \
-                 legend=true legpos=0.9,0.9 leglabel=$$dr \
+                 legend=true legpos=0.9,0.9 leglabel=$(DR_LEGLABEL) \
                  xpix=500 ypix=500 \
                  auxmap=ember auxfunc=log auxmin=100 auxmax=1800 \
                  auxlabel='sources per square arcminute' \
@@ -234,7 +235,7 @@ $(CENTER5P_FIGS): center.fits stilts
                in=center.fits \
                viewsys=galactic clon=0 clat=0 radius=10 \
                sex=false scalebar=false \
-               legend=true legpos=0.9,0.9 leglabel=$$dr \
+               legend=true legpos=0.9,0.9 leglabel=$(DR_LEGLABEL) \
                xpix=600 ypix=400 \
                auxmap=ember auxclip=0,1 auxmin=0 auxmax=670 \
                auxlabel='5+-parameter sources per square arcminute'\
@@ -249,7 +250,7 @@ $(NOBS_FIGS): sky.fits stilts
                xpix=600 ypix=270 \
                projection=aitoff labelpos=none \
                datasys=equatorial viewsys=equatorial \
-               legend=true legpos=1.0,1.0 leglabel=$$dr \
+               legend=true legpos=1.0,1.0 leglabel=$(DR_LEGLABEL) \
                auxclip=0,1 auxmin=0 auxmax=1620 auxmap=voltage \
                auxlabel='observations per source' \
                layer=healpix healpix=hpx8 value=nobs_$$dr datalevel=8 \
@@ -263,7 +264,7 @@ $(LMCFRAC_FIGS): lmc.fits stilts
                xpix=650 ypix=500 \
                viewsys=galactic clon=279 clat=-32.5 radius=7.5 \
                sex=false scalebar=false grid=false \
-               legend=true legpos=0.9,0.9 leglabel=$$dr \
+               legend=true legpos=0.9,0.9 leglabel=$(DR_LEGLABEL) \
                auxmap=light auxfunc=linear auxmin=0.5 auxmax=1.0 \
                auxlabel="Fraction of sources with 5+-parameter astrometry" \
                layer=healpix healpix=hpx12 \
@@ -279,7 +280,7 @@ $(CENTERFRAC_FIGS): center.fits stilts
                viewsys=galactic clon=0 clat=0 radius=10 \
                xpix=600 ypix=400 \
                sex=false scalebar=false \
-               legend=true legpos=0.9,0.9 leglabel=$$dr \
+               legend=true legpos=0.9,0.9 leglabel=$(DR_LEGLABEL) \
                auxmap=light auxfunc=square auxmin=0.0 auxmax=1.0 \
                auxlabel="Fraction of sources with 5+-parameter astrometry" \
                layer=healpix healpix=hpx12 \
