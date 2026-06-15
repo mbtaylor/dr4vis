@@ -103,6 +103,9 @@ clean:
 	rm -f $(LMCFRAC_FIGS) $(CENTERFRAC_FIGS) $(SMC_FIGS) $(M31_FIGS)
 	rm -f $(BAADE_FIGS)
 	rm -f $(MONTAGE_FIGS) $(OTHER_FIGS) cfregions.fits cfmocs.fits
+	rm -f baade-ramp.png center-ramp.png nobs-ramp.png m31-ramp.png
+	rm -f center5p-ramp.png lmcfrac-ramp.png centerfrac-ramp.png
+	rm -f smc-ramp.png
 	for f in $(MONTAGE_FIGS) $(OTHER_FIGS); do \
            rm -f $$f $(NAME_PREFIX)$$f; \
         done
@@ -174,7 +177,10 @@ center5p-dr34.png: center.fits stilts
                  datalevel=12 degrade=1 combine=median \
                  value=nsrc_5p_dr4gs*1.0/nsrc_5p_dr3 \
                  out=$@
-               
+
+CENTER_AUX = auxmap=ember auxclip=0,1 auxmin=0 auxmax=670
+CENTER_FONT = fontsize=20 texttype=antialias
+
 $(CENTER_FIGS): center.fits stilts
 	dr=$(DR_FROM_TARGET_FIG); \
 	./stilts plot2sky \
@@ -182,12 +188,22 @@ $(CENTER_FIGS): center.fits stilts
                viewsys=galactic clon=0 clat=0 radius=10 \
                sex=false scalebar=false \
                legend=true legpos=0.9,0.9 leglabel=$(DR_LEGLABEL) \
-               xpix=600 ypix=400 \
-               auxmap=ember auxclip=0,1 auxmin=0 auxmax=670 \
-               auxlabel='sources per square arcminute' \
+               xpix=560 ypix=400 \
                layer=healpix healpix=hpx12 value=density_$$dr \
                datalevel=12 degrade=2 combine=median datasys=equatorial \
+               auxvisible=false $(CENTER_AUX) \
                out=$@
+
+center-ramp.png: stilts
+	./stilts plot2sky \
+                 grid=false $(CENTER_FONT) \
+                 auxvisible=true auxwidth=20 auxcrowd=0.8 $(CENTER_AUX) \
+                 auxlabel='sources per square arcminute' \
+                 xpix=140 ypix=800 insets=,,,120 \
+                 out=center-ramp.png
+
+SMC_AUX = auxmap=cubehelix auxfunc=log auxmin=3 auxmax=900
+SMC_FONT = fontsize=20 texttype=antialias
 
 $(SMC_FIGS): smc.fits stilts
 	dr=$(DR_FROM_TARGET_FIG); \
@@ -197,25 +213,49 @@ $(SMC_FIGS): smc.fits stilts
                  sex=false scalebar=true grid=false \
                  legend=true legpos=0.9,0.9 leglabel=$(DR_LEGLABEL) \
                  xpix=500 ypix=400 \
-                 auxmap=cubehelix auxfunc=log auxmin=3 auxmax=900 \
-                 auxlabel='density' \
                  layer=mark lon=ra lat=dec shading=weighted combine=count \
                  datasys=equatorial \
+                 $(SMC_FONT) \
+                 auxvisible=false $(SMC_AUX) \
                  out=$@
+
+smc-ramp.png: stilts
+	./stilts plot2sky \
+                 grid=false \
+                 $(SMC_FONT) \
+                 auxvisible=true auxwidth=20 $(SMC_AUX)  \
+                 auxlabel= \
+                 xpix=140 ypix=800 insets=,,,120 \
+                 out=$@
+
+M31_AUX = auxfunc=log auxmin=1 auxmax=580 auxmap=cubehelix
+M31_FONT = fontsize=20 texttype=antialias
+
 
 $(M31_FIGS): m31.fits stilts
 	dr=$(DR_FROM_TARGET_FIG); \
         ./stilts plot2sky \
                  in=m31.fits#m31-$$dr \
                  clon=10.70 clat=41.29 radius=0.85 \
-                 xpix=500 ypix=550 \
+                 xpix=400 ypix=440 \
                  sex=false scalebar=true grid=false \
                  legend=true legpos=0.9,0.9 leglabel=$(DR_LEGLABEL) \
-                 auxfunc=log auxmin=1 auxmax=580 auxmap=cubehelix \
-                 auxvisible=true auxcrowd=0.8 auxlabel=density \
                  layer=mark lon=ra lat=dec \
                             shading=weighted combine=count \
+                 $(M31_FONT) \
+                 auxvisible=false $(M31_AUX) \
                  out=$@
+
+m31-ramp.png: stilts
+	./stilts plot2sky \
+                 grid=false $(M31_FONT) \
+                 auxvisible=true auxwidth=20 $(M31_AUX) \
+                 auxlabel="" auxcrowd=0.6 \
+                 xpix=140 ypix=880 insets=,,,120 \
+                 out=$@
+
+BAADE_AUX = auxmin=48 auxmax=5100 auxfunc=log auxmap=cubehelix
+BAADE_FONT = fontsize=20 texttype=antialias
 
 $(BAADE_FIGS): baade.fits stilts
 	dr=$(DR_FROM_TARGET_FIG); \
@@ -229,8 +269,17 @@ $(BAADE_FIGS): baade.fits stilts
                  layer=skydensity lon=ra lat=dec level=14 \
                        combine=count-per-unit perunit=arcmin2 \
                        datasys=equatorial \
-                 auxvisible=true auxmin=48 auxmax=5100 auxfunc=log \
-                 auxmap=cubehelix auxlabel="sources per square arcminute" \
+                 $(BAADE_FONT) \
+                 auxvisible=false $(BAADE_AUX) \
+                 out=$@
+
+baade-ramp.png: stilts
+	./stilts plot2sky \
+                 grid=false \
+                 $(BAADE_FONT) \
+                 auxvisible=true auxwidth=20 $(BAADE_AUX) \
+                 auxlabel='sources per square arcminute' \
+                 xpix=140 ypix=800 insets=,,,120 \
                  out=$@
 
 $(LMC_FIGS): lmc.fits stilts
@@ -247,6 +296,9 @@ $(LMC_FIGS): lmc.fits stilts
                  datalevel=12 degrade=0 combine=median datasys=equatorial \
                  out=$@
 
+CENTER5P_AUX = auxmap=ember auxclip=0,1 auxmin=0 auxmax=670
+CENTER5P_FONT = fontsize=20 texttype=antialias
+
 $(CENTER5P_FIGS): center.fits stilts
 	dr=$(DR_FROM_TARGET_FIG); \
         degrade=`test $$dr = dr1 && echo 4 || echo 2`; \
@@ -255,12 +307,23 @@ $(CENTER5P_FIGS): center.fits stilts
                viewsys=galactic clon=0 clat=0 radius=10 \
                sex=false scalebar=false \
                legend=true legpos=0.9,0.9 leglabel=$(DR_LEGLABEL) \
-               xpix=600 ypix=400 \
-               auxmap=ember auxclip=0,1 auxmin=0 auxmax=670 \
-               auxlabel='5+-parameter sources per square arcminute'\
+               xpix=560 ypix=400 \
+               auxvisible=false $(CENTER5P_AUX) \
                layer=healpix healpix=hpx12 value=density_5p_$$dr \
                datalevel=12 degrade=$$degrade combine=median datasys=equatorial\
                out=$@
+
+center5p-ramp.png: stilts
+	./stilts plot2sky \
+                 grid=false \
+                 $(CENTER5P_FONT) \
+                 auxvisible=true auxwidth=20 auxcrowd=0.8 $(CENTER5P_AUX) \
+                 auxlabel='5+-parameter sources per square arcminute'\
+                 xpix=140 ypix=800 insets=,,,120 \
+                 out=$@
+
+NOBS_AUX = auxclip=0,1 auxmin=0 auxmax=1620 auxmap=voltage
+NOBS_FONT = fontsize=20 texttype=antialias
 
 $(NOBS_FIGS): sky.fits stilts
 	dr=$(DR_FROM_TARGET_FIG); \
@@ -270,26 +333,48 @@ $(NOBS_FIGS): sky.fits stilts
                projection=aitoff labelpos=none \
                datasys=equatorial viewsys=equatorial \
                legend=true legpos=1.0,1.0 leglabel=$(DR_LEGLABEL) \
-               auxclip=0,1 auxmin=0 auxmax=1620 auxmap=voltage \
-               auxlabel='observations per source' \
                layer=healpix healpix=hpx8 value=nobs_$$dr datalevel=8 \
+               $(NOBS_FONT) \
+               auxvisible=false $(NOBS_AUX) \
                out=$@
+
+nobs-ramp.png: stilts
+	./stilts plot2sky \
+                 grid=false $(NOBS_FONT) \
+                 auxvisible=true auxwidth=20 $(NOBS_AUX) \
+                 auxlabel="observations per source" \
+                 xpix=140 ypix=540 insets=,,,120 \
+                 out=$@
+
+LMCFRAC_AUX = auxmap=light auxfunc=linear auxmin=0.5 auxmax=1.0
+LMCFRAC_FONT = fontsize=20 texttype=antialias
 
 $(LMCFRAC_FIGS): lmc.fits stilts
 	dr=$(DR_FROM_TARGET_FIG); \
         degrade=`test $$dr = dr1 && echo 5 || echo 2`; \
         ./stilts plot2sky \
                in=lmc.fits \
-               xpix=650 ypix=500 \
+               xpix=600 ypix=500 \
                viewsys=galactic clon=279 clat=-32.5 radius=7.5 \
                sex=false scalebar=false grid=false \
                legend=true legpos=0.9,0.9 leglabel=$(DR_LEGLABEL) \
-               auxmap=light auxfunc=linear auxmin=0.5 auxmax=1.0 \
-               auxlabel="Fraction of sources with 5+-parameter astrometry" \
                layer=healpix healpix=hpx12 \
                value=nsrc_5p_$$dr*1.0/nsrc_$$dr \
                datalevel=12 degrade=$$degrade combine=mean datasys=equatorial \
+               $(LMCFRAC_FONT) \
+               auxvisible=false $(LMCFRAC_AUX) \
                out=$@
+
+lmcfrac-ramp.png: stilts
+	./stilts plot2sky \
+                 grid=false $(LMCFRAC_FONT) \
+                 auxvisible=true auxwidth=20 $(LMCFRAC_AUX) auxcrowd=0.5 \
+                 auxlabel="Fraction of sources with 5+-parameter astrometry" \
+                 xpix=140 ypix=1000 insets=,,,120 \
+                 out=$@
+
+CENTERFRAC_FONT = fontsize=20 texttype=antialias
+CENTERFRAC_AUX = auxmap=light auxfunc=square auxmin=0.0 auxmax=1.0 \
 
 $(CENTERFRAC_FIGS): center.fits stilts
 	dr=$(DR_FROM_TARGET_FIG); \
@@ -297,35 +382,46 @@ $(CENTERFRAC_FIGS): center.fits stilts
         ./stilts plot2sky \
                in=center.fits \
                viewsys=galactic clon=0 clat=0 radius=10 \
-               xpix=600 ypix=400 \
+               xpix=560 ypix=400 \
                sex=false scalebar=false \
                legend=true legpos=0.9,0.9 leglabel=$(DR_LEGLABEL) \
-               auxmap=light auxfunc=square auxmin=0.0 auxmax=1.0 \
-               auxlabel="Fraction of sources with 5+-parameter astrometry" \
                layer=healpix healpix=hpx12 \
                value=nsrc_5p_$$dr*1.0/nsrc_$$dr \
                datalevel=12 degrade=$$degrade combine=mean datasys=equatorial \
+               auxvisible=false $(CENTERFRAC_AUX) \
                out=$@
 
-center.png: $(CENTER_FIGS)
-	$(CONVERT) \( center-$(F1).png center-$(F2).png +append \) \
-                   \( center-$(F3).png center-$(F4).png +append \) \
-                   -append \
+centerfrac-ramp.png: stilts
+	./stilts plot2sky \
+                 grid=false $(CENTERFRAC_FONT) \
+                 auxvisible=true auxwidth=20 $(CENTERFRAC_AUX) \
+                 auxlabel="Fraction of sources with 5+-parameter astrometry" \
+                 xpix=140 ypix=800 insets=,,,120 \
+                 out=$@
+
+center.png: $(CENTER_FIGS) center-ramp.png
+	$(CONVERT) \( \( center-$(F1).png center-$(F2).png +append \) \
+                      \( center-$(F3).png center-$(F4).png +append \) \
+                      -append \) \
+                   center-ramp.png +append \
                    -pointsize 24 label:"Galactic Centre source density" \
                    +swap -gravity Center \
                    -append $@
 
-smc.png: $(SMC_FIGS)
-	$(CONVERT) \( smc-dr1.png smc-dr2.png +append \) \
-                   \( smc-dr3.png smc-dr4gs.png +append \) \
-                   -append \
+smc.png: $(SMC_FIGS) smc-ramp.png
+	$(CONVERT) \( \( smc-dr1.png smc-dr2.png +append \) \
+                      \( smc-dr3.png smc-dr4gs.png +append \) \
+                      -append \) \
+                   smc-ramp.png +append \
                    -pointsize 24 label:"SMC source density" \
                    +swap -gravity Center \
                    -append $@
 
-m31.png: $(M31_FIGS)
-	$(CONVERT) \( m31-dr1.png m31-dr2.png +append \) \
-                   \( m31-dr3.png m31-dr4gs.png +append \) \
+m31.png: $(M31_FIGS) m31-ramp.png
+	$(CONVERT) \( \( m31-dr1.png m31-dr2.png +append \) \
+                      \( m31-dr3.png m31-dr4gs.png +append \) \
+                      -append \) \
+                   m31-ramp.png +append \
                    -append \
                    -pointsize 24 label:"M31 source density" \
                    +swap -gravity Center \
@@ -336,30 +432,47 @@ lmc.png: $(LMC_FIGS)
                    \( lmc-$(F3).png lmc-$(F4).png +append \) \
                    -append $@
 
-center5p.png: $(CENTER5P_FIGS)
-	$(CONVERT) \( center5p-$(F1).png center5p-$(F2).png +append \) \
-                   \( center5p-$(F3).png center5p-$(F4).png +append \) \
+center5p.png: $(CENTER5P_FIGS) center5p-ramp.png
+	$(CONVERT) \( \( center5p-$(F1).png center5p-$(F2).png +append \) \
+                      \( center5p-$(F3).png center5p-$(F4).png +append \) \
+                      -append \) \
+                   center5p-ramp.png +append \
+                   -pointsize 24 \
+                   label:"Sources with proper motion in galactic center" \
+                   +swap -gravity Center \
                    -append $@
 
-nobs.png: $(NOBS_FIGS)
-	$(CONVERT) \( nobs-dr1.png nobs-dr2.png +append \) \
-                   \( nobs-dr3.png nobs-dr4gs.png +append \) \
+nobs.png: $(NOBS_FIGS) nobs-ramp.png
+	$(CONVERT) \( \( nobs-dr1.png nobs-dr2.png +append \) \
+                      \( nobs-dr3.png nobs-dr4gs.png +append \) \
+                      -append \) \
+                   nobs-ramp.png +append $@
+
+lmcfrac.png: $(LMCFRAC_FIGS) lmcfrac-ramp.png
+	$(CONVERT) \( \( lmcfrac-$(F1).png lmcfrac-$(F2).png +append \) \
+                      \( lmcfrac-$(F3).png lmcfrac-$(F4).png +append \) \
+                      -append \) \
+                   lmcfrac-ramp.png +append \
+                   -pointsize 24 \
+                   label:"Fraction of LMC sources with proper motion" \
+                   +swap -gravity Center \
                    -append $@
 
-lmcfrac.png: $(LMCFRAC_FIGS)
-	$(CONVERT) \( lmcfrac-$(F1).png lmcfrac-$(F2).png +append \) \
-                   \( lmcfrac-$(F3).png lmcfrac-$(F4).png +append \) \
+centerfrac.png: $(CENTERFRAC_FIGS) centerfrac-ramp.png
+	$(CONVERT) \( \( centerfrac-$(F1).png centerfrac-$(F2).png +append \) \
+                      \( centerfrac-$(F3).png centerfrac-$(F4).png +append \) \
+                      -append \) \
+                   centerfrac-ramp.png +append \
+                   -pointsize 24 \
+                label:"Fraction of Galactic Center sources with proper motion"\
+                   +swap -gravity Center \
                    -append $@
 
-centerfrac.png: $(CENTERFRAC_FIGS)
-	$(CONVERT) \( centerfrac-$(F1).png centerfrac-$(F2).png +append \) \
-                   \( centerfrac-$(F3).png centerfrac-$(F4).png +append \) \
-                   -append $@
-
-baade.png: $(BAADE_FIGS)
-	$(CONVERT) \( baade-dr1.png baade-dr2.png +append \) \
-                   \( baade-dr3.png baade-dr4gs.png +append \) \
-                   -append \
+baade.png: $(BAADE_FIGS) baade-ramp.png
+	$(CONVERT) \( \( baade-dr1.png baade-dr2.png +append \) \
+                      \( baade-dr3.png baade-dr4gs.png +append \) \
+                      -append \) \
+                   baade-ramp.png +append \
                    -pointsize 24 label:"Baade's Window source density" \
                    +swap -gravity Center \
                    -append $@
