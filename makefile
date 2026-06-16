@@ -129,6 +129,7 @@ sky-dr34.png: sky.fits stilts
                  xpix=1200 ypix=580 \
                  auxmap=gnuplot auxmin=1.0 auxmax=2.01 auxfunc=log auxcrowd=.5 \
                  auxlabel='ratio of DR4 to DR3 sources' \
+                 auxwidth=20 fontsize=20 texttype=antialias \
                  layer=healpix degrade=0 healpix=hpx8 datalevel=8 \
                  value=nsrc_dr4gs*1.0/nsrc_dr3 \
                  out=$@
@@ -141,6 +142,7 @@ sky5p-dr34.png: sky.fits stilts
                  xpix=1200 ypix=580 \
                  auxmap=gnuplot auxmin=1.0 auxmax=2.01 auxfunc=log auxcrowd=.5 \
                  auxlabel='ratio of DR4 to DR3 5+-parameter sources' \
+                 auxwidth=20 fontsize=20 texttype=antialias \
                  layer=healpix degrade=0 healpix=hpx8 datalevel=8 \
                  value=nsrc_5p_dr4gs*1.0/nsrc_5p_dr3 \
                  out=$@
@@ -153,6 +155,7 @@ center-dr34.png: center.fits stilts
                  xpix=1200 ypix=800 \
                  auxmap=rainforest auxmin=1.0 auxmax=9 auxfunc=log \
                  auxlabel='ratio of DR4 to DR3 sources' \
+                 auxwidth=20 fontsize=20 texttype=antialias \
                  layer=healpix healpix=hpx12 \
                  datalevel=12 degrade=1 combine=median \
                  value=nsrc_dr4gs*1.0/nsrc_dr3 \
@@ -166,6 +169,7 @@ center5p-dr34.png: center.fits stilts
                  xpix=1200 ypix=800 \
                  auxmap=rainforest auxmin=1.0 auxmax=9 auxfunc=log \
                  auxlabel='ratio of DR4 to DR3 5+-parameter sources' \
+                 auxwidth=20 fontsize=20 texttype=antialias \
                  layer=healpix healpix=hpx12 \
                  datalevel=12 degrade=1 combine=median \
                  value=nsrc_5p_dr4gs*1.0/nsrc_5p_dr3 \
