@@ -14,6 +14,11 @@
 # It's OK to interrupt it or lose the network connection: it should
 # generally pick up from where it left off.
 
+.SUFFIXES: .png .view
+
+.png.view:
+	test -f $< && $(VIEW) $<
+
 DR4_SCHEMA = user_dr4rc3
 
 # This is the ImageMagick convert command.  Depending on your ImageMagick
@@ -21,12 +26,13 @@ DR4_SCHEMA = user_dr4rc3
 CONVERT = convert
 
 # Some kind of image viewing command, used only for view target.
-VIEW = eog
+VIEW = display
 
 DATA_FILES = center.fits sky.fits smc.fits lmc.fits cfregions.fits \
              m31.fits baade.fits
-MONTAGE_FIGS = center.png center5p.png nobs.png lmcfrac.png centerfrac.png \
-               smc.png m31.png baade.png
+MONTAGE_FIGS = center.png baade.png m31.png smc.png \
+               center5p.png centerfrac.png lmcfrac.png \
+               nobs.png
 OTHER_FIGS = sky-dr34.png sky5p-dr34.png center-dr34.png center5p-dr34.png
 
 CENTER_FIGS = center-dr1.png center-dr2.png center-dr3.png \
