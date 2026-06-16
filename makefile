@@ -61,6 +61,12 @@ DR_LEGLABEL = `sh labelname.sh $$dr`
 
 build: $(MONTAGE_FIGS) $(OTHER_FIGS) cfregions.fits
 
+NAME_PREFIX = dr4rc3_
+named: $(MONTAGE_FIGS) $(OTHER_FIGS)
+	for f in $(MONTAGE_FIGS) $(OTHER_FIGS); do \
+           cp $$f $(NAME_PREFIX)$$f; \
+        done
+
 data: $(DATA_FILES)
 
 center.fits: stilts
@@ -97,6 +103,9 @@ clean:
 	rm -f $(LMCFRAC_FIGS) $(CENTERFRAC_FIGS) $(SMC_FIGS) $(M31_FIGS)
 	rm -f $(BAADE_FIGS)
 	rm -f $(MONTAGE_FIGS) $(OTHER_FIGS) cfregions.fits cfmocs.fits
+	for f in $(MONTAGE_FIGS) $(OTHER_FIGS); do \
+           rm -f $$f $(NAME_PREFIX)$$f; \
+        done
 
 veryclean: clean
 	rm -f stilts.jar stilts
