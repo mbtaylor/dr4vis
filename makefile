@@ -331,7 +331,7 @@ $(NOBS_FIGS): sky.fits stilts
                in=sky.fits \
                xpix=600 ypix=270 \
                projection=aitoff labelpos=none \
-               datasys=equatorial viewsys=equatorial \
+               datasys=equatorial viewsys=galactic \
                legend=true legpos=1.0,1.0 leglabel=$(DR_LEGLABEL) \
                layer=healpix healpix=hpx8 value=nobs_$$dr datalevel=8 \
                $(NOBS_FONT) \
