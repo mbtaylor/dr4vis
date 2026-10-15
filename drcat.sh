@@ -104,7 +104,7 @@ do
    fi
 done
 
-for cft in gs asq0
+for cft in gs asq0 ncf cf
 do
    if [ $cft = gs ]
    then
@@ -115,10 +115,23 @@ do
       table=${dr4schema}.all_source_astrometry
       if [ -n "$where" ]
       then
-          where4="$where AND quality_flag=0"
+         where4="$where AND quality_flag=0"
       else
-          where4="quality_flag=0"
+         where4="quality_flag=0"
       fi
+   elif [ $cft = ncf ]
+   then
+      table=${dr4schema}.gaia_source
+      if [ -n "$where" ]
+      then
+         where4="$where AND astrometry_origin != 'crowded_field_source'"
+      else
+         where4="astrometry_origin != 'crowded_field_source'"
+      fi
+   elif [ $cft = cf ]
+   then
+      table=${dr4schema}.crowded_field_source
+      where4=$where
    else
       echo "unknown dr4 variant $cft"
       exit 1

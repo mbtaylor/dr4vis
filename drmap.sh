@@ -57,21 +57,17 @@ pretap=https://geapre.esac.esa.int/tap-server/tap
 authprops="-Dauth.username=@username -Dauth.password=@password"
 authparam="auth=true"
 
-cols2p="CAST(gaia_healpix_index($hpx, source_id) AS INT) as hpx$hpx, \
+cols2p="gaia_healpix_index($hpx, source_id) as hpx$hpx, \
         COUNT(*) as nsrc, \
         AVG(astrometric_n_obs_al) AS nobs"
 
-# The TO_DOUBLEs here are to avoid cryptic "underflow" errors reported
-# for dr4int6 - see C9GACS-1094.  It sounds like these will disappear
-# in the final DR4 release?
 cols5p="$cols2p, \
         AVG(parallax) AS parallax, \
-        AVG(SQRT(pmra*pmra+pmdec*pmdec)) AS pm, \
-        AVG(SQRT(TO_DOUBLE(ra_error)*TO_DOUBLE(ra_error) + \
-                 TO_DOUBLE(dec_error)*TO_DOUBLE(dec_error))) AS pos_error, \
+        AVG(SQRT(pmra*pmra + pmdec*pmdec)) AS pm, \
+        AVG(SQRT(ra_error*ra_error + dec_error*dec_error)) AS pos_error, \
         AVG(parallax_error) AS parallax_error, \
-        AVG(SQRT(TO_DOUBLE(pmra_error)*TO_DOUBLE(pmra_error) + \
-                 TO_DOUBLE(pmdec_error)*TO_DOUBLE(pmdec_error))) AS pm_error"
+        AVG(SQRT(pmra_error*pmra_error + pmdec_error*pmdec_error)) AS pm_error"
+
 grouping="GROUP BY hpx$hpx ORDER BY hpx$hpx"
 densefact=`$stilts calc expression="1./(4*PI*square(180*60/PI)/(12L<<2*$hpx))"`
 densecmd="addcol -units arcmin**-2 density nsrc*`echo $densefact`"
@@ -120,16 +116,29 @@ do
    fi
 done
 
-for cft in gs asq0
+for cft in gs asq0 ncf cf
 do
    if [ $cft = gs ]
    then
       table=${dr4schema}.gaia_source
       where4=
+      cols2p4="$cols2p"
    elif [ $cft = asq0 ]
    then
       table=${dr4schema}.all_source_astrometry
       where4="AND quality_flag=0"
+      cols2p4="$cols2p"
+   elif [ $cft = ncf ]
+   then
+      table=${dr4schema}.gaia_source
+      where4="AND astrometry_origin != 'crowded_field_source'"
+      cols2p4="$cols2p"
+   elif [ $cft = cf ]
+   then
+      table=${dr4schema}.crowded_field_source
+      where4=
+      cols2p4="gaia_healpix_index($hpx, source_id) as hpx$hpx, \
+               COUNT(*) as nsrc"
    else
       echo "unknown dr4 variant"
       exit 1
@@ -141,7 +150,7 @@ do
    then
       $stilts $authprops -bench \
               tapquery $authparam sync=false delete=always tapurl=$pretap \
-              adql="SELECT $cols2p FROM $table $where2p $where4 $grouping" \
+              adql="SELECT $cols2p4 FROM $table $where2p $where4 $grouping" \
               ocmd="$densecmd" \
               out=$file2p
    fi
@@ -157,22 +166,28 @@ do
 done
 
 $stilts tmatchn \
-        multimode=pairs nin=10 iref=4 matcher=exact \
+        multimode=pairs nin=14 iref=4 matcher=exact \
         in1=$name/$name-2p-dr1.fits suffix1=_dr1 values1=hpx$hpx \
         in2=$name/$name-2p-dr2.fits suffix2=_dr2 values2=hpx$hpx \
         in3=$name/$name-2p-dr3.fits suffix3=_dr3 values3=hpx$hpx \
         in4=$name/$name-2p-dr4gs.fits suffix4=_dr4gs values4=hpx$hpx \
         in5=$name/$name-2p-dr4asq0.fits suffix5=_dr4asq0 values5=hpx$hpx \
-        in6=$name/$name-5p-dr1.fits suffix6=_5p_dr1 values6=hpx$hpx \
-        in7=$name/$name-5p-dr2.fits suffix7=_5p_dr2 values7=hpx$hpx \
-        in8=$name/$name-5p-dr3.fits suffix8=_5p_dr3 values8=hpx$hpx \
-        in9=$name/$name-5p-dr4gs.fits suffix9=_5p_dr4gs values9=hpx$hpx \
-        in10=$name/$name-5p-dr4asq0.fits suffix10=_5p_dr4asq0 values10=hpx$hpx \
+        in6=$name/$name-2p-dr4ncf.fits suffix6=_dr4ncf values6=hpx$hpx \
+        in7=$name/$name-2p-dr4cf.fits suffix7=_dr4cf values7=hpx$hpx \
+        in8=$name/$name-5p-dr1.fits suffix8=_5p_dr1 values8=hpx$hpx \
+        in9=$name/$name-5p-dr2.fits suffix9=_5p_dr2 values9=hpx$hpx \
+        in10=$name/$name-5p-dr3.fits suffix10=_5p_dr3 values10=hpx$hpx \
+        in11=$name/$name-5p-dr4gs.fits suffix11=_5p_dr4gs values11=hpx$hpx \
+        in12=$name/$name-5p-dr4asq0.fits suffix12=_5p_dr4asq0 values12=hpx$hpx \
+        in13=$name/$name-5p-dr4ncf.fits suffix13=_5p_dr4ncf values13=hpx$hpx \
+        in14=$name/$name-5p-dr4cf.fits suffix14=_5p_dr4cf values14=hpx$hpx \
         icmd1='clearparams RELEASE' icmd2='clearparams RELEASE' \
         icmd3='clearparams RELEASE' icmd4='clearparams RELEASE' \
         icmd5='clearparams RELEASE' icmd6='clearparams RELEASE' \
         icmd7='clearparams RELEASE' icmd8='clearparams RELEASE' \
         icmd9='clearparams RELEASE' icmd10='clearparams RELEASE' \
+        icmd11='clearparams RELEASE' icmd12='clearparams RELEASE' \
+        icmd13='clearparams RELEASE' icmd14='clearparams RELEASE' \
         ocmd="addcol -before 1 hpx$hpx hpx${hpx}_dr4gs" \
         ocmd="delcols hpx${hpx}_*" \
         ocmd="healpixmeta -level $hpx -column hpx$hpx -csys C -nested" \
