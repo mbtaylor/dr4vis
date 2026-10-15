@@ -70,17 +70,17 @@ named: $(MONTAGE_FIGS) $(OTHER_FIGS)
 data: $(DATA_FILES)
 
 center.fits: stilts
-	sh drmap.sh -stilts ./stilts -name center -hpx 12 \
+	sh drmap.sh -stilts "./stilts -Xmx12G" -name center -authall -hpx 12 \
            -where "NOT (l BETWEEN 15 AND 345) AND (b BETWEEN -10 AND 10)"
 
 sky.fits: stilts
-	sh drmap.sh -stilts ./stilts -name sky -hpx 8
+	sh drmap.sh -stilts ./stilts -name sky -authall -hpx 8
 
 sky10.fits: stilts
 	sh drmap.sh -stilts "./stilts -Xmx20G" -name sky10 -authall -hpx 10
 
 lmc.fits: stilts
-	sh drmap.sh -stilts ./stilts -name lmc -hpx 12 \
+	sh drmap.sh -stilts ./stilts -name lmc -authall -hpx 12 \
            -where "l BETWEEN 265 AND 295 AND b BETWEEN -43 AND -21"
 
 smc.fits: stilts

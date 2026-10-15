@@ -67,15 +67,10 @@ authprops="-Dauth.username=@username -Dauth.password=@password"
 authparam="auth=true"
 
 
-# The TO_DOUBLEs here are to avoid cryptic "underflow" errors reported
-# for dr4int6 - see C9GACS-1094.  It sounds like these will disappear
-# in the final DR4 release?
 cols="source_id, ra, dec, parallax, pmra, pmdec,
       SQRT(pmra*pmra+pmdec*pmdec) AS pm, \
-      SQRT(TO_DOUBLE(ra_error)*TO_DOUBLE(ra_error) + \
-           TO_DOUBLE(dec_error)*TO_DOUBLE(dec_error)) AS pos_error, \
-      SQRT(TO_DOUBLE(pmra_error)*TO_DOUBLE(pmra_error) + \
-           TO_DOUBLE(pmdec_error)*TO_DOUBLE(pmdec_error)) AS pm_error, \
+      SQRT(ra_error*ra_error + dec_error*dec_error) AS pos_error, \
+      SQRT(pmra_error*pmra_error + pmdec_error*pmdec_error) AS pm_error, \
       astrometric_n_obs_al"
 
 mkdir -p $name
