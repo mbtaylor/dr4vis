@@ -76,6 +76,9 @@ center.fits: stilts
 sky.fits: stilts
 	sh drmap.sh -stilts ./stilts -name sky -authall -hpx 8
 
+sky9.fits: stilts
+	sh drmap.sh -stilts "./stilts -Xmx20G" -name sky9 -authall -hpx 9 
+
 sky10.fits: stilts
 	sh drmap.sh -stilts "./stilts -Xmx20G" -name sky10 -authall -hpx 10
 
