@@ -1,15 +1,14 @@
 Please edit captions as required if I've got something wrong or
 used terminology that could be worded better.
 
+---------------------------------------------------------------
+
 Credit: ESA/Gaia/DPAC
 License: CC BY-SA 3.0 IGO
 Acknowledgement: Mark Taylor/Tineke Roegiers, created using TOPCAT/STILTS
 
 ---------------------------------------------------------------
-center.png:
-Edits required:
-   remove title
-   higher resolution
+center:
 
 Title:
    Galactic center source density for DR1/2/3/4
@@ -34,10 +33,26 @@ Long caption:
 
 
 ---------------------------------------------------------------
+centerdr4:
+
+Title:
+   Galactic center source densities in DR4
+
+Short caption:
+   The density of Gaia sources in a 30x20 degree region in the
+   galactic center, taken from four different selections in Gaia DR4:
+   the gaia_source table, gaia_source excluding entries with
+   astrometry from the crowded field processing,
+   the all_source table, and the crowded field processing results only.
+
+Long caption:
+   [I'm not sure I can write this one, somebody who understands the
+   astrometry should advise.  Claus Fabricius already advised on
+   the all_source, quality_flag=0 option.]
+
+
+---------------------------------------------------------------
 centerfrac.png
-Edits required:
-   remove title
-   higher resolution
 
 Title:
    Proportion of Galactic center sources with measured proper motion
@@ -60,6 +75,45 @@ Long caption:
    proper motion as well as position values.  The stripes show the
    influence of the scanning law on this quantity.
 
+
+---------------------------------------------------------------
+smc:
+
+Title:
+   
+
+---------------------------------------------------------------
+lmcfrac:
+
+Title:
+   Proportion of LMC sources with measured proper motion
+
+Short caption:
+   This shows the fraction of Gaia sources in the region of the
+   Large Magellanic Cloud for which proper motion as asll as position
+   has been measured, for Gaia DR1, DR2, DR3 and DR4.
+
+Long caption:
+   All sources in the gaia_source catalogue for each data release have
+   high-quality positions determined by Gaia, but values for their
+   proper motions require a large number of observations and can only
+   be determined for some fraction of those sources.
+   At DR1 very few proper motions could be determined so this fraction
+   is near zero over the whole of this region.  Later data releases
+   have accumulated more observations so that motions can be determined
+   for a higher fraction of the observed sources.
+   At DR4 more than 90% of the sources in most of this region have
+   proper motion as well as position values.  The dark shape in the
+   middle
+
+---------------------------------------------------------------
+m31:
+
+---------------------------------------------------------------
+baade:
+
+---------------------------------------------------------------
+nobs:
 
 
 

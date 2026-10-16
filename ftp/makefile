@@ -69,8 +69,8 @@ CENTER_MONTAGE_FIGS = center-size0.png center-size1.png
 CENTER_OTHER_FIGS = $(CENTER_FIGS_SIZE0) $(CENTER_FIGS_SIZE1) \
                     center-ramp-size0.png center-ramp-size1.png
 
-CENTERDR4_FIGS_BASE = centerdr4-dr4asq0 centerdr4-dr4gs \
-                      centerdr4-dr4ncf centerdr4-dr4cf
+CENTERDR4_FIGS_BASE = centerdr4-dr4gs centerdr4-dr4ncf \
+                      centerdr4-dr4asq0 centerdr4-dr4cf
 CENTERDR4_FIGS_SIZE0 = $(CENTERDR4_FIGS_BASE:=-size0.png)
 CENTERDR4_FIGS_SIZE1 = $(CENTERDR4_FIGS_BASE:=-size1.png)
 CENTERDR4_MONTAGE_FIGS = centerdr4-size0.png centerdr4-size1.png
@@ -395,7 +395,7 @@ $(LMCFRAC_FIGS_SIZE0): lmc.fits stilts
                xpix=500 ypix=420 $(FONT_SIZE0) \
                insets='10,10,10,10' \
                viewsys=galactic clon=279 clat=-32.5 radius=7.5 \
-               sex=false scalebar=false grid=false \
+               sex=false scalebar=true grid=false \
                legend=true legpos=0.9,0.9 \
                labelpos=none \
                layer_h=healpix healpix_h=hpx12 \
@@ -426,7 +426,7 @@ $(LMCFRAC_FIGS_SIZE1): lmc.fits stilts
                xpix=1000 ypix=840 $(FONT_SIZE1) \
                insets='20,20,20,20' \
                viewsys=galactic clon=279 clat=-32.5 radius=7.5 \
-               sex=false scalebar=false grid=false \
+               sex=false scalebar=true grid=false \
                legend=true legpos=0.9,0.9 \
                labelpos=none \
                layer_h=healpix healpix_h=hpx12 \
