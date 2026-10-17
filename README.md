@@ -8,5 +8,5 @@ password-protected access to embargoed data.
 To generate the local data files and figures, just run `make build`.
 However, for embargoed data you will need to have in this directory
 files `username` and `password` containing your cosmos credentials,
-authorized for access to (currently) DR4INT4B.
+authorized for access to (currently) DR4RC3.
 These files should be user-read only (`chmod 600`).
