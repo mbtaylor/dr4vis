@@ -1,5 +1,33 @@
-Please edit captions as required if I've got something wrong or
-used terminology that could be worded better.
+Notes:
+
+Each image is provided in two versions, size0 and size1.
+These don't correspond exactly to the sizes at
+https://gaia.esac.esa.int/dpacsvn/DPAC/CU8/MPIA/software/skymap/README.rst
+since they don't all have the same shape, but they have approximately
+the same width (size0 is ~1000 pixels across, size1 ~2000 pixels across).
+
+If you want size2 as well let me know, similarly other changes
+such as colour maps, projections, labelling etc.
+
+I've written captions as best I can, but I'm not an expert on the
+science or data processing.  Before using them could you run the
+text past somebody who knows what they're talking about?
+Please add attribution as appropriate.
+
+For the M31 and SMC montages I have removed the colour ramp because
+I can't easily generate them in physical units like sources per square
+arcmin (it's to do with the fact that the density is relatively low).
+But I could reinstate it, either without units or with somewhat
+arbitrary units, on request.
+Conversely if you want to remove the colour ramp from the other
+images I can regenerate them without it (or you can just clip it off)
+but I think that the quantitative information is interesting/useful.
+
+The galactic center figures have 5-degree grid lines on them,
+but I could remove these if you think it looks better.
+
+For the record, these figures are all reproducible using the
+makefiles at https://github.com/mbtaylor/dr4vis/.
 
 ---------------------------------------------------------------
 
@@ -11,51 +39,62 @@ Acknowledgement: Mark Taylor/Tineke Roegiers, created using TOPCAT/STILTS
 center:
 
 Title:
-   Galactic center source density for DR1/2/3/4
+   Galactic center source density in Gaia DR1/2/3/4
 
 Short caption:
    Density of Gaia sources in a 30x20 degree region in the galactic center,
    shown for Gaia DR1, DR2, DR3 and DR4.
 
 Long caption:
-   Density of Gaia sources in a 30x20 degree region in the galactic center,
-   shown for Gaia DR1, DR2, DR3 and DR4.
    Note that the scanning artifacts are all but absent in DR4.
    The data is from the gaia_source table in each release;
    at DR4 this table consolidates all sources considered to have
    both high-quality astrometry and high-quality photometry.
    The large black spots are regions for which SIF Crowded Field
-   measurements were used,
-   with densities up to around 2000 sources per square arcminute.
+   measurements were used, with densities up to around 2000
+   sources per square arcminute.
    These correspond to the SGR I and Baade's Window regions.
    A third and less prominent Crowded Field region, NGC6656,
    is also visible towards the lower left.
-
 
 ---------------------------------------------------------------
 centerdr4:
 
 Title:
-   Galactic center source densities in DR4
+   Galactic center source densities in Gaia DR4
 
 Short caption:
    The density of Gaia sources in a 30x20 degree region in the
    galactic center, taken from four different selections in Gaia DR4:
-   the gaia_source table, gaia_source excluding entries with
-   astrometry from the crowded field processing,
-   the all_source table, and the crowded field processing results only.
+   1: the gaia_source table; 2: gaia_source excluding entries
+   with astrometry from the crowded field processing;
+   3: AGIS solutions from the all_source table;
+   and 4: the crowded field processing results only.
 
 Long caption:
-   [I'm not sure I can write this one, somebody who understands the
-   astrometry should advise.  Claus Fabricius already advised on
-   the all_source, quality_flag=0 option.]
+   The selections are:
+     1. FROM gaia_source
+     2. FROM gaia_source WHERE astrometry_origin != 'crowded_field_source'
+     3. FROM all_source_astrometry WHERE quality_flag = 0
+     4. FROM crowded_field_source
+
+   Claus Fabricius said (C9OUTR-298):
+     "You may select sources with quality_flag=0 from
+      user_dr4int6.all_source_astrometry That will give all acceptable
+      AGIS solutions in cycle 4, and contributions from other pipelines
+      (CF, SeaPipe) will be left out. It is therefore directly comparable
+      to earlier cycles where gaia_source only included sources from AGIS."
+
+Note:
+   Claus should be added to the credits for this one.
 
 
 ---------------------------------------------------------------
-centerfrac.png
+centerfrac
 
 Title:
    Proportion of Galactic center sources with measured proper motion
+   in Gaia DR1/2/3/4
 
 Short caption:
    This shows the fraction of Gaia sources in a 30x20 degree region in
@@ -80,18 +119,24 @@ Long caption:
 smc:
 
 Title:
-   
+   SMC source density in Gaia DR1/2/3/4
+
+Short caption:
+   Gaia sources in the Small Magellanic Cloud, shown in a
+   galactic projection for Gaia DR1, DR2, DR3 and DR4.
+   The colours indicate source density on a logarithmic scale.
+
 
 ---------------------------------------------------------------
 lmcfrac:
 
 Title:
-   Proportion of LMC sources with measured proper motion
+   Proportion of LMC sources with measured proper motion in Gaia DR1/2/3/4
 
 Short caption:
    This shows the fraction of Gaia sources in the region of the
-   Large Magellanic Cloud for which proper motion as asll as position
-   has been measured, for Gaia DR1, DR2, DR3 and DR4.
+   Large Magellanic Cloud for which proper motion as as well as
+   position has been measured, for Gaia DR1, DR2, DR3 and DR4.
 
 Long caption:
    All sources in the gaia_source catalogue for each data release have
@@ -102,18 +147,56 @@ Long caption:
    is near zero over the whole of this region.  Later data releases
    have accumulated more observations so that motions can be determined
    for a higher fraction of the observed sources.
-   At DR4 more than 90% of the sources in most of this region have
-   proper motion as well as position values.  The dark shape in the
-   middle
+   At DR4 around 90% of the sources in most of this region have
+   proper motion as well as position values, and the instrumental
+   signature due to the scanning law evident in earlier releases
+   is much reduced.  The dark shape in the middle for DR4 corresponds
+   to SIF CF processing performed in this region in which proper
+   motions have been determined for nearly all the sources.
+   The astrometry is taken from the gaia_source catalogue in each
+   data release.
 
 ---------------------------------------------------------------
 m31:
 
+Title:
+   M31 sources in Gaia DR1/2/3/4
+
+Short caption:
+   Gaia sources in the region of M31, shown in an equatorial
+   projection for Gaia DR1, DR2, DR3 and DR4.
+   The colours in crowded regions indicate source density on
+   a logarithmic scale.
+
+
 ---------------------------------------------------------------
 baade:
 
+Title:
+   Baade's Window source density in Gaia DR1/2/3/4
+
+Short caption:
+   Density of Gaia sources in the region of Baade's window,
+   shown in a galactic projection for Gaia DR1, DR2, DR3 and DR4.
+
+Long caption:
+   Baade's window is one of the SIF CF regions.
+   The data is from the gaia_source table in each release.
+   At DR4 this table consolidates all sources considered to have
+   both high-quality astrometry and high-quality photometry,
+   and most of the gaia_source astrometry in this region results
+   from Crowded Field processing.
+
 ---------------------------------------------------------------
 nobs:
+
+Title:
+   Observation count on the sky in Gaia DR1/2/3/4
+
+Short Caption:
+   The number of times that Gaia has observed sources in different
+   parts of the sky, determined by its scanning law, is shown in
+   a galactic projection for Gaia DR1, DR2, DR3 and DR4.
 
 
 
