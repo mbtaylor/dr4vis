@@ -1,13 +1,17 @@
 Notes:
 
-Each image is provided in two versions, size0 and size1.
+Each image is provided in two sizes, <name>-size0.png
+and <name>-size1.png, as well as an animated gif <name>-size0.gif.
+
 These don't correspond exactly to the sizes at
 https://gaia.esac.esa.int/dpacsvn/DPAC/CU8/MPIA/software/skymap/README.rst
 since they don't all have the same shape, but they have approximately
 the same width (size0 is ~1000 pixels across, size1 ~2000 pixels across).
 
-If you want size2 as well let me know, similarly other changes
-such as colour maps, projections, labelling etc.
+If you want size2 as well for some or all of them let me know,
+however for some of the figures (galactic center and Baade's window)
+there may be problems getting the resolution high enough to make
+that worthwhile because of GACS limitations.
 
 I've written captions as best I can, but I'm not an expert on the
 science or data processing.  Before using them could you run the
@@ -20,11 +24,15 @@ arcmin (it's to do with the fact that the density is relatively low).
 But I could reinstate it, either without units or with somewhat
 arbitrary units, on request.
 Conversely if you want to remove the colour ramp from the other
-images I can regenerate them without it (or you can just clip it off)
-but I think that the quantitative information is interesting/useful.
+images I can regenerate them without it (or you can just clip it off) -
+it's actually much easier to generate the montages without the
+colour ramp.  Personally I think that the quantitative information
+is interesting/useful, and it makes it clear that the same colour
+map is in use for all of the 4 frames.
 
 The galactic center figures have 5-degree grid lines on them,
 but I could remove these if you think it looks better.
+Other cosmetic changes you'd prefer, just let me know.
 
 For the record, these figures are all reproducible using the
 makefiles at https://github.com/mbtaylor/dr4vis/.
@@ -65,7 +73,7 @@ Title:
 
 Short caption:
    The density of Gaia sources in a 30x20 degree region in the
-   galactic center, taken from four different selections in Gaia DR4:
+   galactic center, taken from four different selections in Gaia DR4.
    1: the gaia_source table; 2: gaia_source excluding entries
    with astrometry from the crowded field processing;
    3: AGIS solutions from the all_source table;
