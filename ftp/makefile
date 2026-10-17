@@ -7,6 +7,8 @@
 # Some kind of image viewing command, used only for view target.
 VIEW = display
 
+ANIMATE = convert -delay 150 -loop 0 -dispose previous
+
 # These files are built by the makefile in the parent directory.
 # Could add some recursive make to get them built, but for now I'm
 # just running make build in the parent directory.
@@ -29,10 +31,10 @@ $(DATA_FILES):
 build: build-ftp-figs
 
 view-size0: build
-	display `ls $(FTP_FIGS) | grep size0`
+	display `ls $(FTP_FIGS) | grep size0.png`
 
 view-size1: build
-	display `ls $(FTP_FIGS) | grep size1`
+	display `ls $(FTP_FIGS) | grep size1.png`
 
 clean:
 	rm -f $(DATA_FILES) $(FTP_FIGS) $(OTHER_FIGS)
@@ -59,61 +61,64 @@ LABEL_LAYER = \
 NOBS_FIGS_BASE = nobs-dr1 nobs-dr2 nobs-dr3 nobs-dr4gs
 NOBS_FIGS_SIZE0 = $(NOBS_FIGS_BASE:=-size0.png)
 NOBS_FIGS_SIZE1 = $(NOBS_FIGS_BASE:=-size1.png)
-NOBS_MONTAGE_FIGS = nobs-size0.png nobs-size1.png
+NOBS_MONTAGE_FIGS = nobs-size0.png nobs-size1.png nobs-size0.gif
 NOBS_OTHER_FIGS = $(NOBS_FIGS_SIZE0) $(NOBS_FIGS_SIZE1) \
-                  nobs-ramp-size0.png nobs-ramp-size1.png
+                  nobs-ramp-size0.png nobs-ramp-size1.png \
 
 CENTER_FIGS_BASE = center-dr1 center-dr2 center-dr3 center-dr4gs
 CENTER_FIGS_SIZE0 = $(CENTER_FIGS_BASE:=-size0.png)
 CENTER_FIGS_SIZE1 = $(CENTER_FIGS_BASE:=-size1.png)
-CENTER_MONTAGE_FIGS = center-size0.png center-size1.png
+CENTER_MONTAGE_FIGS = center-size0.png center-size1.png center-size0.gif
 CENTER_OTHER_FIGS = $(CENTER_FIGS_SIZE0) $(CENTER_FIGS_SIZE1) \
-                    center-ramp-size0.png center-ramp-size1.png
+                    center-ramp-size0.png center-ramp-size1.png \
 
 CENTERDR4_FIGS_BASE = centerdr4-dr4gs centerdr4-dr4ncf \
                       centerdr4-dr4asq0 centerdr4-dr4cf
 CENTERDR4_FIGS_SIZE0 = $(CENTERDR4_FIGS_BASE:=-size0.png)
 CENTERDR4_FIGS_SIZE1 = $(CENTERDR4_FIGS_BASE:=-size1.png)
-CENTERDR4_MONTAGE_FIGS = centerdr4-size0.png centerdr4-size1.png
+CENTERDR4_MONTAGE_FIGS = centerdr4-size0.png centerdr4-size1.png \
+                         centerdr4-size0.gif
 CENTERDR4_OTHER_FIGS = $(CENTERDR4_FIGS_SIZE0) $(CENTERDR4_FIGS_SIZE1) \
-                       centerdr4-ramp-size0.png centerdr4-ramp-size1.png
+                       centerdr4-ramp-size0.png centerdr4-ramp-size1.png \
+                       centerdr4-
 
 CENTERFRAC_FIGS_BASE = centerfrac-dr1 centerfrac-dr2 \
                        centerfrac-dr3 centerfrac-dr4gs
 CENTERFRAC_FIGS_SIZE0 = $(CENTERFRAC_FIGS_BASE:=-size0.png)
 CENTERFRAC_FIGS_SIZE1 = $(CENTERFRAC_FIGS_BASE:=-size1.png)
-CENTERFRAC_MONTAGE_FIGS = centerfrac-size0.png centerfrac-size1.png
+CENTERFRAC_MONTAGE_FIGS = centerfrac-size0.png centerfrac-size1.png \
+                          centerfrac-size0.gif
 CENTERFRAC_OTHER_FIGS = $(CENTERFRAC_FIGS_SIZE0) $(CENTERFRAC_FIGS_SIZE1) \
                         centerfrac-ramp-size0.png centerfrac-ramp-size1.png
 
 SMC_FIGS_BASE = smc-dr1 smc-dr2 smc-dr3 smc-dr4gs
 SMC_FIGS_SIZE0 = $(SMC_FIGS_BASE:=-size0.png)
 SMC_FIGS_SIZE1 = $(SMC_FIGS_BASE:=-size1.png)
-SMC_MONTAGE_FIGS = smc-size0.png smc-size1.png
+SMC_MONTAGE_FIGS = smc-size0.png smc-size1.png smc-size0.gif
 SMC_OTHER_FIGS = $(SMC_FIGS_SIZE0) $(SMC_FIGS_SIZE1)
 
 LMCFRAC_FIGS_BASE = lmcfrac-dr1 lmcfrac-dr2 lmcfrac-dr3 lmcfrac-dr4gs
 LMCFRAC_FIGS_SIZE0 = $(LMCFRAC_FIGS_BASE:=-size0.png)
 LMCFRAC_FIGS_SIZE1 = $(LMCFRAC_FIGS_BASE:=-size1.png)
-LMCFRAC_MONTAGE_FIGS = lmcfrac-size0.png lmcfrac-size1.png
+LMCFRAC_MONTAGE_FIGS = lmcfrac-size0.png lmcfrac-size1.png lmcfrac-size0.gif
 LMCFRAC_OTHER_FIGS = $(LMCFRAC_FIGS_SIZE0) $(LMCFRAC_FIGS_SIZE1) \
-                     lmcfrac-ramp-size0.png lmcfrac-ramp-size1.png
+                     lmcfrac-ramp-size0.png lmcfrac-ramp-size0.png
 
 M31_FIGS_BASE = m31-dr1 m31-dr2 m31-dr3 m31-dr4gs
 M31_FIGS_SIZE0 = $(M31_FIGS_BASE:=-size0.png)
 M31_FIGS_SIZE1 = $(M31_FIGS_BASE:=-size1.png)
-M31_MONTAGE_FIGS = m31-size0.png m31-size1.png
+M31_MONTAGE_FIGS = m31-size0.png m31-size1.png m31-size0.gif
 M31_OTHER_FIGS = $(M31_FIGS_SIZE0) $(M31_FIGS_SIZE1)
 
 BAADE_FIGS_BASE = baade-dr1 baade-dr2 baade-dr3 baade-dr4gs
 BAADE_FIGS_SIZE0 = $(BAADE_FIGS_BASE:=-size0.png)
 BAADE_FIGS_SIZE1 = $(BAADE_FIGS_BASE:=-size1.png)
-BAADE_MONTAGE_FIGS = baade-size0.png baade-size1.png
+BAADE_MONTAGE_FIGS = baade-size0.png baade-size1.png baade-size0.gif
 BAADE_OTHER_FIGS = $(BAADE_FIGS_SIZE0) $(BAADE_FIGS_SIZE1) \
                    baade-ramp-size0.png baade-ramp-size1.png
 
 
-uploads:
+uploads: $(FTP_FIGS)
 	rm -rf upload
 	mkdir upload
 	cp README.txt $(FTP_FIGS) upload/
@@ -169,6 +174,9 @@ nobs-size0.png: stilts $(NOBS_FIGS_SIZE0) nobs-ramp-size0.png
 
 nobs-size1.png: stilts $(NOBS_FIGS_SIZE1) nobs-ramp-size1.png
 	sh montage.sh -ramp nobs-ramp-size1.png $(NOBS_FIGS_SIZE1) $@
+
+nobs-size0.gif: $(NOBS_FIGS_SIZE1)
+	$(ANIMATE) $(NOBS_FIGS_SIZE1) $@
 
 CENTER_AUX = auxmap=ember auxclip=0,1 auxmin=0 auxmax=670
 
@@ -226,6 +234,9 @@ center-ramp-size1.png: stilts
 center-size1.png: $(CENTER_FIGS_SIZE1) center-ramp-size1.png 
 	sh montage.sh -ramp center-ramp-size1.png $(CENTER_FIGS_SIZE1) $@
 
+center-size0.gif: $(CENTER_FIGS_SIZE1)
+	$(ANIMATE) $(CENTER_FIGS_SIZE1) $@
+
 
 CENTERDR4_AUX = auxmap=ember auxclip=0,1 auxmin=0 auxmax=2300
 
@@ -269,7 +280,7 @@ $(CENTERDR4_FIGS_SIZE1): center.fits stilts
                datasys_h=equatorial \
                auxvisible=false $(CENTERDR4_AUX) \
                legend=true legpos=0.9,0.9 \
-               $(LABEL_LAYER) leglabel_l=$(DR_LEGLABEL) \
+               $(LABEL_LAYER) leglabel_l="`sh dr4labelname.sh $$dr`" \
                out=$@
 
 centerdr4-ramp-size1.png: stilts
@@ -282,6 +293,10 @@ centerdr4-ramp-size1.png: stilts
 
 centerdr4-size1.png: $(CENTERDR4_FIGS_SIZE1) centerdr4-ramp-size1.png 
 	sh montage.sh -ramp centerdr4-ramp-size1.png $(CENTERDR4_FIGS_SIZE1) $@
+
+centerdr4-size0.gif: $(CENTERDR4_FIGS_SIZE1)
+	$(ANIMATE) $(CENTERDR4_FIGS_SIZE1) $@
+
 
 
 CENTERFRAC_AUX = auxmap=light auxfunc=square auxmin=0.0 auxmax=1.0
@@ -346,6 +361,9 @@ centerfrac-size1.png: $(CENTERFRAC_FIGS_SIZE1) centerfrac-ramp-size1.png
 	sh montage.sh -ramp centerfrac-ramp-size1.png $(CENTERFRAC_FIGS_SIZE1) \
                       $@
 
+centerfrac-size0.gif: $(CENTERFRAC_FIGS_SIZE1)
+	$(ANIMATE) $(CENTERFRAC_FIGS_SIZE1) $@
+
 
 SMC_AUX = auxmap=cubehelix auxfunc=log auxvisible=false
 
@@ -388,6 +406,9 @@ $(SMC_FIGS_SIZE1): smc.fits stilts
 
 smc-size1.png: $(SMC_FIGS_SIZE1)
 	sh montage.sh $(SMC_FIGS_SIZE1) $@
+
+smc-size0.gif: $(SMC_FIGS_SIZE1)
+	$(ANIMATE) $(SMC_FIGS_SIZE1) $@
 
 
 LMCFRAC_AUX = auxmap=light auxfunc=linear auxmin=0.5 auxmax=1.0
@@ -454,6 +475,9 @@ lmcfrac-size1.png: $(LMCFRAC_FIGS_SIZE1) lmcfrac-ramp-size1.png
 	sh montage.sh -ramp lmcfrac-ramp-size1.png $(LMCFRAC_FIGS_SIZE1) \
                       $@
 
+lmcfrac-size0.gif: $(LMCFRAC_FIGS_SIZE1)
+	$(ANIMATE) $(LMCFRAC_FIGS_SIZE1) $@
+
 
 M31_AUX = auxmap=cubehelix auxfunc=log auxvisible=false
 
@@ -493,6 +517,9 @@ $(M31_FIGS_SIZE1): m31.fits stilts
 
 m31-size1.png: $(M31_FIGS_SIZE1)
 	sh montage.sh $(M31_FIGS_SIZE1) $@
+
+m31-size0.gif: $(M31_FIGS_SIZE1)
+	$(ANIMATE) $(M31_FIGS_SIZE1) $@
 
 
 BAADE_AUX = auxmin=95 auxmax=9000 auxfunc=log auxmap=rainforest auxclip=0,1
@@ -552,6 +579,9 @@ baade-ramp-size1.png: stilts
 
 baade-size1.png: $(BAADE_FIGS_SIZE1) baade-ramp-size1.png
 	sh montage.sh -ramp baade-ramp-size1.png $(BAADE_FIGS_SIZE1) $@
+
+baade-size0.gif: $(BAADE_FIGS_SIZE1)
+	$(ANIMATE) $(BAADE_FIGS_SIZE1) $@
 
 
 
