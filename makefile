@@ -91,7 +91,7 @@ smc.fits: stilts
            -where "l BETWEEN 290 AND 315 AND b BETWEEN -50 AND -38"
 
 m31.fits: stilts
-	sh drcat.sh -stilts ./stilts -name m31 -sync \
+	sh drcat.sh -stilts ./stilts -name m31 -authall -sync \
            -where "ra BETWEEN 9.2 AND 12.2 AND dec BETWEEN 39.8 AND 42.8"
 
 baade.fits: stilts
