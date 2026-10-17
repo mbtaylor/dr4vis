@@ -44,7 +44,7 @@ veryclean: clean
 	rm -f stilts stilts.jar
 
 stilts.jar:
-	curl -OL http://www.starlink.ac.uk/stilts/$@
+	ln -s ../$@ .
 
 stilts: stilts.jar
 	unzip stilts.jar stilts
@@ -102,7 +102,7 @@ LMCFRAC_FIGS_SIZE0 = $(LMCFRAC_FIGS_BASE:=-size0.png)
 LMCFRAC_FIGS_SIZE1 = $(LMCFRAC_FIGS_BASE:=-size1.png)
 LMCFRAC_MONTAGE_FIGS = lmcfrac-size0.png lmcfrac-size1.png lmcfrac-size0.gif
 LMCFRAC_OTHER_FIGS = $(LMCFRAC_FIGS_SIZE0) $(LMCFRAC_FIGS_SIZE1) \
-                     lmcfrac-ramp-size0.png lmcfrac-ramp-size0.png
+                     lmcfrac-ramp-size0.png lmcfrac-ramp-size1.png
 
 M31_FIGS_BASE = m31-dr1 m31-dr2 m31-dr3 m31-dr4gs
 M31_FIGS_SIZE0 = $(M31_FIGS_BASE:=-size0.png)
