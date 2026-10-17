@@ -36,8 +36,9 @@ view-size1: build
 
 clean:
 	rm -f $(DATA_FILES) $(FTP_FIGS) $(OTHER_FIGS)
+	rm -rf upload
 
-veryclean:
+veryclean: clean
 	rm -f stilts stilts.jar
 
 stilts.jar:
@@ -112,6 +113,10 @@ BAADE_OTHER_FIGS = $(BAADE_FIGS_SIZE0) $(BAADE_FIGS_SIZE1) \
                    baade-ramp-size0.png baade-ramp-size1.png
 
 
+uploads:
+	rm -rf upload
+	mkdir upload
+	cp README.txt $(FTP_FIGS) upload/
 
 build-ftp-figs: $(FTP_FIGS)
 
@@ -245,7 +250,7 @@ centerdr4-ramp-size0.png: stilts
                  grid=false $(FONT_SIZE0) \
                  auxvisible=true auxwidth=20 auxcrowd=0.6 $(CENTERDR4_AUX) \
                  auxlabel='sources per square arcminute' \
-                 xpix=120 ypix=700 insets=,,,140 \
+                 xpix=140 ypix=700 insets=,,,120 \
                  out=$@
 
 centerdr4-size0.png: $(CENTERDR4_FIGS_SIZE0) centerdr4-ramp-size0.png 
