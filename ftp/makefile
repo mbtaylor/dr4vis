@@ -58,7 +58,7 @@ DR_LEGLABEL = `sh labelname.sh $$dr`
 LABEL_LAYER = \
    layer_l=mark size_l=0 color_l=white lon_l=0 lat_l=0 icmd_l='head 0' legseq=_l
 
-NOBS_FIGS_BASE = nobs-dr1 nobs-dr2 nobs-dr3 nobs-dr4gs
+NOBS_FIGS_BASE = nobs-dr1 nobs-dr2 nobs-dr3 nobs-dr4asq0
 NOBS_FIGS_SIZE0 = $(NOBS_FIGS_BASE:=-size0.png)
 NOBS_FIGS_SIZE1 = $(NOBS_FIGS_BASE:=-size1.png)
 NOBS_MONTAGE_FIGS = nobs-size0.png nobs-size1.png nobs-size0.gif
