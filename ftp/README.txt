@@ -11,7 +11,10 @@ the same width (size0 is ~1000 pixels across, size1 ~2000 pixels across).
 If you want size2 as well for some or all of them let me know,
 however for some of the figures (galactic center and Baade's window)
 there may be problems getting the resolution high enough to make
-that worthwhile because of GACS limitations.
+that worthwhile because of GACS limitations (currently blocked by
+C9GACS-1201, since to do HEALPix aggregation for order>12
+the gaia_healpix_index UDF doesn't work and ivo_healpix_index
+is currently broken).
 
 I've written captions as best I can, but I'm not an expert on the
 science or data processing.  Before using them could you run the
