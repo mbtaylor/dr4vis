@@ -9,7 +9,7 @@ since they don't all have the same shape, but they have approximately
 the same width (size0 is ~1000 pixels across, size1 ~2000 pixels across).
 
 If you want size2 as well for some or all of them let me know,
-however for some of the figures (galactic center and Baade's window)
+however for some of the figures (galactic center)
 there may be problems getting the resolution high enough to make
 that worthwhile because of GACS limitations (currently blocked by
 C9GACS-1201, since to do HEALPix aggregation for order>12
