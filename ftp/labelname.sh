@@ -13,6 +13,9 @@ dr3)
 dr4gs)
    echo DR4
    ;;
+dr4asq0)
+   echo DR4
+   ;;
 *)
    echo $1
 esac

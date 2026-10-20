@@ -825,7 +825,7 @@ $(BAADE_FIGS_SIZE2): baade.fits stilts
 baade-ramp-size2.png: stilts
 	./stilts plot2sky \
                  grid=false $(FONT_SIZE2) \
-                 auxvisible=true auxwidth=40 auxcrowd=0.8 $(BAADE_AUX) \
+                 auxvisible=true auxwidth=80 auxcrowd=0.8 $(BAADE_AUX) \
                  auxlabel='sources per square arcminute' \
                  xpix=560 ypix=3200 insets=,,,480 \
                  out=$@
