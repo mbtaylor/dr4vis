@@ -54,6 +54,7 @@ stilts: stilts.jar
 DR_FROM_TARGET_FIG = `echo $@ | sed -e's/.*\(dr[1234][a-z0]*\).*/\1/'`
 FONT_SIZE0 = fontsize=18 texttype=antialias
 FONT_SIZE1 = fontsize=36 texttype=antialias
+FONT_SIZE2 = fontsize=72 texttype=antialias
 DR_LEGLABEL = `sh labelname.sh $$dr`
 LABEL_LAYER = \
    layer_l=mark size_l=0 color_l=white lon_l=0 lat_l=0 icmd_l='head 0' legseq=_l
@@ -61,61 +62,86 @@ LABEL_LAYER = \
 NOBS_FIGS_BASE = nobs-dr1 nobs-dr2 nobs-dr3 nobs-dr4asq0
 NOBS_FIGS_SIZE0 = $(NOBS_FIGS_BASE:=-size0.png)
 NOBS_FIGS_SIZE1 = $(NOBS_FIGS_BASE:=-size1.png)
-NOBS_MONTAGE_FIGS = nobs-size0.png nobs-size1.png nobs-size0.gif
-NOBS_OTHER_FIGS = $(NOBS_FIGS_SIZE0) $(NOBS_FIGS_SIZE1) \
-                  nobs-ramp-size0.png nobs-ramp-size1.png \
+NOBS_FIGS_SIZE2 = $(NOBS_FIGS_BASE:=-size2.png)
+NOBS_MONTAGE_FIGS = nobs-size0.png nobs-size1.png nobs-size2.png \
+                    nobs-size0.gif nobs-size1.gif
+NOBS_OTHER_FIGS = $(NOBS_FIGS_SIZE0) $(NOBS_FIGS_SIZE1) $(NOBS_FIGS_SIZE2) \
+                  nobs-ramp-size0.png nobs-ramp-size1.png nobs-ramp-size2.png
 
 CENTER_FIGS_BASE = center-dr1 center-dr2 center-dr3 center-dr4gs
 CENTER_FIGS_SIZE0 = $(CENTER_FIGS_BASE:=-size0.png)
 CENTER_FIGS_SIZE1 = $(CENTER_FIGS_BASE:=-size1.png)
-CENTER_MONTAGE_FIGS = center-size0.png center-size1.png center-size0.gif
+CENTER_FIGS_SIZE2 = $(CENTER_FIGS_BASE:=-size2.png)
+CENTER_MONTAGE_FIGS = center-size0.png center-size1.png center-size2.png \
+                      center-size0.gif center-size1.gif
 CENTER_OTHER_FIGS = $(CENTER_FIGS_SIZE0) $(CENTER_FIGS_SIZE1) \
+                    $(CENTER_FIGS_SIZE2) \
                     center-ramp-size0.png center-ramp-size1.png \
+                    center-ramp-size2.png
 
 CENTERDR4_FIGS_BASE = centerdr4-dr4gs centerdr4-dr4ncf \
                       centerdr4-dr4asq0 centerdr4-dr4cf
 CENTERDR4_FIGS_SIZE0 = $(CENTERDR4_FIGS_BASE:=-size0.png)
 CENTERDR4_FIGS_SIZE1 = $(CENTERDR4_FIGS_BASE:=-size1.png)
+CENTERDR4_FIGS_SIZE2 = $(CENTERDR4_FIGS_BASE:=-size2.png)
 CENTERDR4_MONTAGE_FIGS = centerdr4-size0.png centerdr4-size1.png \
-                         centerdr4-size0.gif
+                         centerdr4-size2.png \
+                         centerdr4-size0.gif centerdr4-size1.gif
 CENTERDR4_OTHER_FIGS = $(CENTERDR4_FIGS_SIZE0) $(CENTERDR4_FIGS_SIZE1) \
+                       $(CENTERDR4_FIGS_SIZE2) \
                        centerdr4-ramp-size0.png centerdr4-ramp-size1.png \
-                       centerdr4-
+                       centerdr4-ramp-size2.png
 
 CENTERFRAC_FIGS_BASE = centerfrac-dr1 centerfrac-dr2 \
                        centerfrac-dr3 centerfrac-dr4gs
 CENTERFRAC_FIGS_SIZE0 = $(CENTERFRAC_FIGS_BASE:=-size0.png)
 CENTERFRAC_FIGS_SIZE1 = $(CENTERFRAC_FIGS_BASE:=-size1.png)
+CENTERFRAC_FIGS_SIZE2 = $(CENTERFRAC_FIGS_BASE:=-size2.png)
 CENTERFRAC_MONTAGE_FIGS = centerfrac-size0.png centerfrac-size1.png \
-                          centerfrac-size0.gif
+                          centerfrac-size2.png \
+                          centerfrac-size0.gif centerfrac-size1.gif
 CENTERFRAC_OTHER_FIGS = $(CENTERFRAC_FIGS_SIZE0) $(CENTERFRAC_FIGS_SIZE1) \
-                        centerfrac-ramp-size0.png centerfrac-ramp-size1.png
+                        $(CENTERFRAC_FIGS_SIZE2) \
+                        centerfrac-ramp-size0.png centerfrac-ramp-size1.png \
+                        centerfrac-ramp-size2.png
 
 SMC_FIGS_BASE = smc-dr1 smc-dr2 smc-dr3 smc-dr4gs
 SMC_FIGS_SIZE0 = $(SMC_FIGS_BASE:=-size0.png)
 SMC_FIGS_SIZE1 = $(SMC_FIGS_BASE:=-size1.png)
-SMC_MONTAGE_FIGS = smc-size0.png smc-size1.png smc-size0.gif
-SMC_OTHER_FIGS = $(SMC_FIGS_SIZE0) $(SMC_FIGS_SIZE1)
+SMC_FIGS_SIZE2 = $(SMC_FIGS_BASE:=-size2.png)
+SMC_MONTAGE_FIGS = smc-size0.png smc-size1.png smc-size2.png \
+                   smc-size0.gif smc-size1.gif
+SMC_OTHER_FIGS = $(SMC_FIGS_SIZE0) $(SMC_FIGS_SIZE1) $(SMC_FIGS_SIZE2)
 
 LMCFRAC_FIGS_BASE = lmcfrac-dr1 lmcfrac-dr2 lmcfrac-dr3 lmcfrac-dr4gs
 LMCFRAC_FIGS_SIZE0 = $(LMCFRAC_FIGS_BASE:=-size0.png)
 LMCFRAC_FIGS_SIZE1 = $(LMCFRAC_FIGS_BASE:=-size1.png)
-LMCFRAC_MONTAGE_FIGS = lmcfrac-size0.png lmcfrac-size1.png lmcfrac-size0.gif
+LMCFRAC_FIGS_SIZE2 = $(LMCFRAC_FIGS_BASE:=-size2.png)
+LMCFRAC_MONTAGE_FIGS = lmcfrac-size0.png lmcfrac-size1.png lmcfrac-size2.png \
+                       lmcfrac-size0.gif lmcfrac-size1.gif
 LMCFRAC_OTHER_FIGS = $(LMCFRAC_FIGS_SIZE0) $(LMCFRAC_FIGS_SIZE1) \
-                     lmcfrac-ramp-size0.png lmcfrac-ramp-size1.png
+                     $(LMCFRAC_FIGS_SIZE2) \
+                     lmcfrac-ramp-size0.png lmcfrac-ramp-size1.png \
+                     lmcfrac-ramp-size2.png
 
 M31_FIGS_BASE = m31-dr1 m31-dr2 m31-dr3 m31-dr4gs
 M31_FIGS_SIZE0 = $(M31_FIGS_BASE:=-size0.png)
 M31_FIGS_SIZE1 = $(M31_FIGS_BASE:=-size1.png)
-M31_MONTAGE_FIGS = m31-size0.png m31-size1.png m31-size0.gif
-M31_OTHER_FIGS = $(M31_FIGS_SIZE0) $(M31_FIGS_SIZE1)
+M31_FIGS_SIZE2 = $(M31_FIGS_BASE:=-size2.png)
+M31_MONTAGE_FIGS = m31-size0.png m31-size1.png m31-size2.png \
+                   m31-size0.gif m31-size1.gif
+M31_OTHER_FIGS = $(M31_FIGS_SIZE0) $(M31_FIGS_SIZE1) $(M31_FIGS_SIZE2)
 
 BAADE_FIGS_BASE = baade-dr1 baade-dr2 baade-dr3 baade-dr4gs
 BAADE_FIGS_SIZE0 = $(BAADE_FIGS_BASE:=-size0.png)
 BAADE_FIGS_SIZE1 = $(BAADE_FIGS_BASE:=-size1.png)
-BAADE_MONTAGE_FIGS = baade-size0.png baade-size1.png baade-size0.gif
+BAADE_FIGS_SIZE2 = $(BAADE_FIGS_BASE:=-size2.png)
+BAADE_MONTAGE_FIGS = baade-size0.png baade-size1.png baade-size2.png \
+                     baade-size0.gif baade-size1.gif
 BAADE_OTHER_FIGS = $(BAADE_FIGS_SIZE0) $(BAADE_FIGS_SIZE1) \
-                   baade-ramp-size0.png baade-ramp-size1.png
+                   $(BAADE_FIGS_SIZE2) \
+                   baade-ramp-size0.png baade-ramp-size1.png \
+                   baade-ramp-size2.png
 
 
 uploads: $(FTP_FIGS)
@@ -153,6 +179,19 @@ $(NOBS_FIGS_SIZE1): sky.fits stilts
                $(LABEL_LAYER) leglabel_l=$(DR_LEGLABEL) \
                out=$@
 
+$(NOBS_FIGS_SIZE2): sky.fits stilts
+	dr=$(DR_FROM_TARGET_FIG); \
+        ./stilts plot2sky \
+               xpix=2000 ypix=1000 $(FONT_SIZE2) \
+               in=sky.fits \
+               projection=aitoff labelpos=none \
+               datasys=equatorial viewsys=galactic \
+               layer_h=healpix healpix_h=hpx8 value_h=nobs_$$dr datalevel_h=8 \
+               auxvisible=false $(NOBS_AUX) \
+               legend=true legpos=1.0,1.0 \
+               $(LABEL_LAYER) leglabel_l=$(DR_LEGLABEL) \
+               out=$@
+
 nobs-ramp-size0.png: stilts
 	./stilts plot2sky \
                  grid=false $(FONT_SIZE0) \
@@ -169,14 +208,28 @@ nobs-ramp-size1.png: stilts
                  xpix=280 ypix=1000 insets=,,,240 \
                  out=$@
 
+nobs-ramp-size2.png: stilts
+	./stilts plot2sky \
+                 grid=false $(FONT_SIZE2) \
+                 auxvisible=true auxwidth=64 auxcrowd=0.25 $(NOBS_AUX) \
+                 auxlabel="observations per source" \
+                 xpix=560 ypix=2000 insets=,,,480 \
+                 out=$@
+
 nobs-size0.png: stilts $(NOBS_FIGS_SIZE0) nobs-ramp-size0.png
 	sh montage.sh -ramp nobs-ramp-size0.png $(NOBS_FIGS_SIZE0) $@
 
 nobs-size1.png: stilts $(NOBS_FIGS_SIZE1) nobs-ramp-size1.png
 	sh montage.sh -ramp nobs-ramp-size1.png $(NOBS_FIGS_SIZE1) $@
 
+nobs-size2.png: stilts $(NOBS_FIGS_SIZE2) nobs-ramp-size2.png
+	sh montage.sh -ramp nobs-ramp-size2.png $(NOBS_FIGS_SIZE2) $@
+
 nobs-size0.gif: $(NOBS_FIGS_SIZE1)
 	$(ANIMATE) $(NOBS_FIGS_SIZE1) $@
+
+nobs-size1.gif: $(NOBS_FIGS_SIZE2)
+	$(ANIMATE) $(NOBS_FIGS_SIZE2) $@
 
 CENTER_AUX = auxmap=ember auxclip=0,1 auxmin=0 auxmax=670
 
@@ -234,8 +287,38 @@ center-ramp-size1.png: stilts
 center-size1.png: $(CENTER_FIGS_SIZE1) center-ramp-size1.png 
 	sh montage.sh -ramp center-ramp-size1.png $(CENTER_FIGS_SIZE1) $@
 
+$(CENTER_FIGS_SIZE2): center.fits stilts
+	dr=$(DR_FROM_TARGET_FIG); \
+	./stilts plot2sky \
+               xpix=2000 ypix=1400 $(FONT_SIZE2) \
+               insets='40,40,40,40' \
+               in=center.fits \
+               viewsys=galactic clon=0 clat=0 radius=10 labelpos=none \
+               sex=false scalebar=false \
+               layer_h=healpix healpix_h=hpx12 value_h=density_$$dr \
+               datalevel_h=12 degrade_h=1 combine_h=median \
+               datasys_h=equatorial \
+               auxvisible=false $(CENTER_AUX) \
+               legend=true legpos=0.9,0.9 \
+               $(LABEL_LAYER) leglabel_l=$(DR_LEGLABEL) \
+               out=$@
+
+center-ramp-size2.png: stilts
+	./stilts plot2sky \
+                 grid=false $(FONT_SIZE2) \
+                 auxvisible=true auxwidth=80 auxcrowd=0.2 $(CENTER_AUX) \
+                 auxlabel='sources per square arcminute' \
+                 xpix=480 ypix=2800 insets=,,,560 \
+                 out=$@
+
+center-size2.png: $(CENTER_FIGS_SIZE2) center-ramp-size2.png 
+	sh montage.sh -ramp center-ramp-size2.png $(CENTER_FIGS_SIZE2) $@
+
 center-size0.gif: $(CENTER_FIGS_SIZE1)
 	$(ANIMATE) $(CENTER_FIGS_SIZE1) $@
+
+center-size1.gif: $(CENTER_FIGS_SIZE2)
+	$(ANIMATE) $(CENTER_FIGS_SIZE2) $@
 
 
 CENTERDR4_AUX = auxmap=ember auxclip=0,1 auxmin=0 auxmax=2300
@@ -294,8 +377,38 @@ centerdr4-ramp-size1.png: stilts
 centerdr4-size1.png: $(CENTERDR4_FIGS_SIZE1) centerdr4-ramp-size1.png 
 	sh montage.sh -ramp centerdr4-ramp-size1.png $(CENTERDR4_FIGS_SIZE1) $@
 
+$(CENTERDR4_FIGS_SIZE2): center.fits stilts
+	dr=$(DR_FROM_TARGET_FIG); \
+	./stilts plot2sky \
+               xpix=2000 ypix=1400 $(FONT_SIZE2) \
+               insets='40,40,40,40' \
+               in=center.fits \
+               viewsys=galactic clon=0 clat=0 radius=10 labelpos=none \
+               sex=false scalebar=false \
+               layer_h=healpix healpix_h=hpx12 value_h=density_$$dr \
+               datalevel_h=12 degrade_h=1 combine_h=median \
+               datasys_h=equatorial \
+               auxvisible=false $(CENTERDR4_AUX) \
+               legend=true legpos=0.9,0.9 \
+               $(LABEL_LAYER) leglabel_l="`sh dr4labelname.sh $$dr`" \
+               out=$@
+
+centerdr4-ramp-size2.png: stilts
+	./stilts plot2sky \
+                 grid=false $(FONT_SIZE2) \
+                 auxvisible=true auxwidth=80 auxcrowd=0.15 $(CENTERDR4_AUX) \
+                 auxlabel='sources per square arcminute' \
+                 xpix=480 ypix=2800 insets=,,,560 \
+                 out=$@
+
+centerdr4-size2.png: $(CENTERDR4_FIGS_SIZE2) centerdr4-ramp-size2.png 
+	sh montage.sh -ramp centerdr4-ramp-size2.png $(CENTERDR4_FIGS_SIZE2) $@
+
 centerdr4-size0.gif: $(CENTERDR4_FIGS_SIZE1)
 	$(ANIMATE) $(CENTERDR4_FIGS_SIZE1) $@
+
+centerdr4-size1.gif: $(CENTERDR4_FIGS_SIZE2)
+	$(ANIMATE) $(CENTERDR4_FIGS_SIZE2) $@
 
 
 
@@ -361,8 +474,41 @@ centerfrac-size1.png: $(CENTERFRAC_FIGS_SIZE1) centerfrac-ramp-size1.png
 	sh montage.sh -ramp centerfrac-ramp-size1.png $(CENTERFRAC_FIGS_SIZE1) \
                       $@
 
+$(CENTERFRAC_FIGS_SIZE2): center.fits stilts
+	dr=$(DR_FROM_TARGET_FIG); \
+        degrade=`test $$dr = dr1 && echo 5 || echo 1`; \
+        ./stilts plot2sky \
+               xpix=2000 ypix=1400 $(FONT_SIZE2) \
+               insets='40,40,40,40' \
+               in=center.fits \
+               viewsys=galactic clon=0 clat=0 radius=10 labelpos=none \
+               sex=false scalebar=false \
+               layer_h=healpix healpix_h=hpx12 \
+               value_h=nsrc_5p_$$dr*1.0/nsrc_$$dr \
+               datalevel_h=12 degrade_h=$$degrade combine_h=mean \
+               datasys_h=equatorial \
+               auxvisible=false $(CENTERFRAC_AUX) \
+               legend=true legpos=0.9,0.9 \
+               $(LABEL_LAYER) leglabel_l=$(DR_LEGLABEL) \
+               out=$@
+
+centerfrac-ramp-size2.png: stilts
+	./stilts plot2sky \
+                 grid=false $(FONT_SIZE2) \
+                 auxvisible=true auxwidth=80 auxcrowd=0.2 $(CENTERFRAC_AUX) \
+                 auxlabel='Fraction of sources having proper motions' \
+                 xpix=480 ypix=2800 insets=,,,560 \
+                 out=$@
+
+centerfrac-size2.png: $(CENTERFRAC_FIGS_SIZE2) centerfrac-ramp-size2.png 
+	sh montage.sh -ramp centerfrac-ramp-size2.png $(CENTERFRAC_FIGS_SIZE2) \
+                      $@
+
 centerfrac-size0.gif: $(CENTERFRAC_FIGS_SIZE1)
 	$(ANIMATE) $(CENTERFRAC_FIGS_SIZE1) $@
+
+centerfrac-size1.gif: $(CENTERFRAC_FIGS_SIZE2)
+	$(ANIMATE) $(CENTERFRAC_FIGS_SIZE2) $@
 
 
 SMC_AUX = auxmap=cubehelix auxfunc=log auxvisible=false
@@ -407,8 +553,31 @@ $(SMC_FIGS_SIZE1): smc.fits stilts
 smc-size1.png: $(SMC_FIGS_SIZE1)
 	sh montage.sh $(SMC_FIGS_SIZE1) $@
 
+$(SMC_FIGS_SIZE2): smc.fits stilts
+	dr=$(DR_FROM_TARGET_FIG); \
+        ./stilts plot2sky \
+                 xpix=2000 ypix=1600 $(FONT_SIZE2) \
+                 $(SMC_AUX) auxmin=1 auxmax=250 \
+                 insets=16,16,16,16 \
+                 in=smc.fits#smc-$$dr \
+                 viewsys=galactic clon=302.6 clat=-44.2 radius=1.1 \
+                 labelpos=none \
+                 sex=false scalebar=true grid=false \
+                 layer_m=mark lon_m=ra lat_m=dec size_m=3 \
+                 shading_m=weighted combine_=count \
+                 datasys_m=equatorial \
+                 legend=true legpos=0.9,0.9 \
+                 $(LABEL_LAYER) leglabel_l=$(DR_LEGLABEL) \
+                 out=$@
+
+smc-size2.png: $(SMC_FIGS_SIZE2)
+	sh montage.sh $(SMC_FIGS_SIZE2) $@
+
 smc-size0.gif: $(SMC_FIGS_SIZE1)
 	$(ANIMATE) $(SMC_FIGS_SIZE1) $@
+
+smc-size1.gif: $(SMC_FIGS_SIZE2)
+	$(ANIMATE) $(SMC_FIGS_SIZE2) $@
 
 
 LMCFRAC_AUX = auxmap=light auxfunc=linear auxmin=0.5 auxmax=1.0
@@ -475,8 +644,42 @@ lmcfrac-size1.png: $(LMCFRAC_FIGS_SIZE1) lmcfrac-ramp-size1.png
 	sh montage.sh -ramp lmcfrac-ramp-size1.png $(LMCFRAC_FIGS_SIZE1) \
                       $@
 
+$(LMCFRAC_FIGS_SIZE2): lmc.fits stilts
+	dr=$(DR_FROM_TARGET_FIG); \
+        degrade=`test $$dr = dr1 && echo 5 || echo 1`; \
+        ./stilts plot2sky \
+               in=lmc.fits \
+               xpix=2000 ypix=1680 $(FONT_SIZE2) \
+               insets='40,40,40,40' \
+               viewsys=galactic clon=279 clat=-32.5 radius=7.5 \
+               sex=false scalebar=true grid=false \
+               legend=true legpos=0.9,0.9 \
+               labelpos=none \
+               layer_h=healpix healpix_h=hpx12 \
+               value_h=nsrc_5p_$$dr*1.0/nsrc_$$dr \
+               datalevel_h=12 degrade_h=$$degrade combine_h=mean \
+               datasys_h=equatorial \
+               auxvisible=false $(LMCFRAC_AUX) \
+               $(LABEL_LAYER) leglabel_l=$(DR_LEGLABEL) \
+               out=$@
+
+lmcfrac-ramp-size2.png: stilts
+	./stilts plot2sky \
+                 grid=false $(FONT_SIZE2) \
+                 auxvisible=true auxwidth=80 auxcrowd=0.3 $(LMCFRAC_AUX) \
+                 auxlabel='Fraction of sources with proper motions' \
+                 xpix=480 ypix=3360 insets=,,,400 \
+                 out=$@
+
+lmcfrac-size2.png: $(LMCFRAC_FIGS_SIZE2) lmcfrac-ramp-size2.png 
+	sh montage.sh -ramp lmcfrac-ramp-size2.png $(LMCFRAC_FIGS_SIZE2) \
+                      $@
+
 lmcfrac-size0.gif: $(LMCFRAC_FIGS_SIZE1)
 	$(ANIMATE) $(LMCFRAC_FIGS_SIZE1) $@
+
+lmcfrac-size1.gif: $(LMCFRAC_FIGS_SIZE2)
+	$(ANIMATE) $(LMCFRAC_FIGS_SIZE2) $@
 
 
 M31_AUX = auxmap=cubehelix auxfunc=log auxvisible=false
@@ -518,8 +721,30 @@ $(M31_FIGS_SIZE1): m31.fits stilts
 m31-size1.png: $(M31_FIGS_SIZE1)
 	sh montage.sh $(M31_FIGS_SIZE1) $@
 
+$(M31_FIGS_SIZE2): m31.fits stilts
+	dr=$(DR_FROM_TARGET_FIG); \
+        ./stilts plot2sky \
+                 xpix=2000 ypix=2200 $(FONT_SIZE2) \
+                 insets=16,16,16,16 \
+                 $(M31_AUX) auxmin=1 auxmax=580 \
+                 in=m31.fits#m31-$$dr \
+                 clon=10.70 clat=41.29 radius=0.89 \
+                 sex=false scalebar=true grid=false labelpos=none \
+                 layer_m=mark lon_m=ra lat_m=dec \
+                            shading_m=weighted combine_m=count \
+                            size_m=4 \
+                 legend=true legpos=0.9,0.9 \
+                 $(LABEL_LAYER) leglabel_l=$(DR_LEGLABEL) \
+                 out=$@
+
+m31-size2.png: $(M31_FIGS_SIZE2)
+	sh montage.sh $(M31_FIGS_SIZE2) $@
+
 m31-size0.gif: $(M31_FIGS_SIZE1)
 	$(ANIMATE) $(M31_FIGS_SIZE1) $@
+
+m31-size1.gif: $(M31_FIGS_SIZE2)
+	$(ANIMATE) $(M31_FIGS_SIZE2) $@
 
 
 BAADE_AUX = auxmin=95 auxmax=9000 auxfunc=log auxmap=rainforest auxclip=0,1
@@ -580,8 +805,39 @@ baade-ramp-size1.png: stilts
 baade-size1.png: $(BAADE_FIGS_SIZE1) baade-ramp-size1.png
 	sh montage.sh -ramp baade-ramp-size1.png $(BAADE_FIGS_SIZE1) $@
 
+$(BAADE_FIGS_SIZE2): baade.fits stilts
+	dr=$(DR_FROM_TARGET_FIG); \
+        ./stilts plot2sky \
+                 xpix=2000 ypix=1600 $(FONT_SIZE2) \
+                 insets=16,16,16,16 \
+                 in=baade.fits#baade-$$dr \
+                 viewsys=galactic \
+                 clon=1.03 clat=-3.93 radius=0.4 \
+                 sex=false grid=false \
+                 layer_d=skydensity lon_d=ra lat_d=dec level_d=15 \
+                       combine_d=count-per-unit perunit_d=arcmin2 \
+                       datasys_d=equatorial \
+                 auxvisible=false $(BAADE_AUX) \
+                 legend=true legpos=0.9,0.9 \
+                 $(LABEL_LAYER) leglabel=$(DR_LEGLABEL) \
+                 out=$@
+
+baade-ramp-size2.png: stilts
+	./stilts plot2sky \
+                 grid=false $(FONT_SIZE2) \
+                 auxvisible=true auxwidth=40 auxcrowd=0.8 $(BAADE_AUX) \
+                 auxlabel='sources per square arcminute' \
+                 xpix=560 ypix=3200 insets=,,,480 \
+                 out=$@
+
+baade-size2.png: $(BAADE_FIGS_SIZE2) baade-ramp-size2.png
+	sh montage.sh -ramp baade-ramp-size2.png $(BAADE_FIGS_SIZE2) $@
+
 baade-size0.gif: $(BAADE_FIGS_SIZE1)
 	$(ANIMATE) $(BAADE_FIGS_SIZE1) $@
+
+baade-size1.gif: $(BAADE_FIGS_SIZE2)
+	$(ANIMATE) $(BAADE_FIGS_SIZE2) $@
 
 
 

@@ -1,20 +1,13 @@
 Notes:
 
-Each image is provided in two sizes, <name>-size0.png
-and <name>-size1.png, as well as an animated gif <name>-size0.gif.
+Each image is provided in three sizes, <name>-size0.png,
+<name>-size1.png and <name>-size2.png, as well as animated gifs
+<name>-size0.gif and <name>-size1.gif.
 
 These don't correspond exactly to the sizes at
 https://gaia.esac.esa.int/dpacsvn/DPAC/CU8/MPIA/software/skymap/README.rst
 since they don't all have the same shape, but they have approximately
 the same width (size0 is ~1000 pixels across, size1 ~2000 pixels across).
-
-If you want size2 as well for some or all of them let me know,
-however for some of the figures (galactic center)
-there may be problems getting the resolution high enough to make
-that worthwhile because of GACS limitations (currently blocked by
-C9GACS-1201, since to do HEALPix aggregation for order>12
-the gaia_healpix_index UDF doesn't work and ivo_healpix_index
-is currently broken).
 
 I've written captions as best I can, but I'm not an expert on the
 science or data processing.  Before using them could you run the
