@@ -121,7 +121,7 @@ do
    fi
 done
 
-for cft in gs as asq0 ncf cf
+for cft in gs as asq0 asp ncf cf
 do
    if [ $cft = gs ]
    then
@@ -138,6 +138,10 @@ do
       table=${dr4schema}.all_source_astrometry
       where4="AND quality_flag=0"
       cols2p4="$cols2p"
+   elif [ $cft = asp ]
+   then
+      table="${dr4schema}.all_source_photometry NATURAL JOIN ${dr4schema}.all_source_astrometry"
+      col2p4="$cols2p"
    elif [ $cft = ncf ]
    then
       table=${dr4schema}.gaia_source
@@ -176,23 +180,25 @@ do
 done
 
 $stilts tmatchn \
-        multimode=pairs nin=16 iref=4 matcher=exact \
+        multimode=pairs nin=18 iref=4 matcher=exact \
         in1=$name/$name-2p-dr1.fits suffix1=_dr1 values1=hpx$hpx \
         in2=$name/$name-2p-dr2.fits suffix2=_dr2 values2=hpx$hpx \
         in3=$name/$name-2p-dr3.fits suffix3=_dr3 values3=hpx$hpx \
         in4=$name/$name-2p-dr4gs.fits suffix4=_dr4gs values4=hpx$hpx \
         in5=$name/$name-2p-dr4as.fits suffix5=_dr4as values5=hpx$hpx \
         in6=$name/$name-2p-dr4asq0.fits suffix6=_dr4asq0 values6=hpx$hpx \
-        in7=$name/$name-2p-dr4ncf.fits suffix7=_dr4ncf values7=hpx$hpx \
-        in8=$name/$name-2p-dr4cf.fits suffix8=_dr4cf values8=hpx$hpx \
-        in9=$name/$name-5p-dr1.fits suffix9=_5p_dr1 values9=hpx$hpx \
-        in10=$name/$name-5p-dr2.fits suffix10=_5p_dr2 values10=hpx$hpx \
-        in11=$name/$name-5p-dr3.fits suffix11=_5p_dr3 values11=hpx$hpx \
-        in12=$name/$name-5p-dr4gs.fits suffix12=_5p_dr4gs values12=hpx$hpx \
-        in13=$name/$name-5p-dr4as.fits suffix13=_5p_dr4as values13=hpx$hpx \
-        in14=$name/$name-5p-dr4asq0.fits suffix14=_5p_dr4asq0 values14=hpx$hpx \
-        in15=$name/$name-5p-dr4ncf.fits suffix15=_5p_dr4ncf values15=hpx$hpx \
-        in16=$name/$name-5p-dr4cf.fits suffix16=_5p_dr4cf values16=hpx$hpx \
+        in7=$name/$name-2p-dr4asp.fits suffix7=_dr4asp values7=hpx$hpx \
+        in8=$name/$name-2p-dr4ncf.fits suffix8=_dr4ncf values8=hpx$hpx \
+        in9=$name/$name-2p-dr4cf.fits suffix9=_dr4cf values9=hpx$hpx \
+        in10=$name/$name-5p-dr1.fits suffix10=_5p_dr1 values10=hpx$hpx \
+        in11=$name/$name-5p-dr2.fits suffix11=_5p_dr2 values11=hpx$hpx \
+        in12=$name/$name-5p-dr3.fits suffix12=_5p_dr3 values12=hpx$hpx \
+        in13=$name/$name-5p-dr4gs.fits suffix13=_5p_dr4gs values13=hpx$hpx \
+        in14=$name/$name-5p-dr4as.fits suffix14=_5p_dr4as values14=hpx$hpx \
+        in15=$name/$name-5p-dr4asq0.fits suffix15=_5p_dr4asq0 values15=hpx$hpx \
+        in16=$name/$name-5p-dr4asp.fits suffix16=_5p_dr4asp values16=hpx$hpx \
+        in17=$name/$name-5p-dr4ncf.fits suffix17=_5p_dr4ncf values17=hpx$hpx \
+        in18=$name/$name-5p-dr4cf.fits suffix18=_5p_dr4cf values18=hpx$hpx \
         icmd1='clearparams RELEASE' icmd2='clearparams RELEASE' \
         icmd3='clearparams RELEASE' icmd4='clearparams RELEASE' \
         icmd5='clearparams RELEASE' icmd6='clearparams RELEASE' \
@@ -201,6 +207,7 @@ $stilts tmatchn \
         icmd11='clearparams RELEASE' icmd12='clearparams RELEASE' \
         icmd13='clearparams RELEASE' icmd14='clearparams RELEASE' \
         icmd15='clearparams RELEASE' icmd16='clearparams RELEASE' \
+        icmd17='clearparams RELEASE' icmd18='clearparams RELEASE' \
         ocmd="addcol -before 1 hpx$hpx hpx${hpx}_dr4gs" \
         ocmd="delcols hpx${hpx}_*" \
         ocmd="healpixmeta -level $hpx -column hpx$hpx -csys C -nested" \

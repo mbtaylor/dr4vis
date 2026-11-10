@@ -99,7 +99,7 @@ do
    fi
 done
 
-for cft in gs as asq0 ncf cf
+for cft in gs as asq0 asp ncf cf
 do
    if [ $cft = gs ]
    then
@@ -118,6 +118,10 @@ do
       else
          where4="quality_flag=0"
       fi
+   elif [ $cft = asp ]
+   then
+      table="${dr4schema}.all_source_photometry NATURAL JOIN ${dr4schema}.all_source_astrometry"
+      where4=$where
    elif [ $cft = ncf ]
    then
       table=${dr4schema}.gaia_source
@@ -154,6 +158,6 @@ echo $name.fits
 $stilts tmulti in=$name/$name-dr1.fits in=$name/$name-dr2.fits \
                in=$name/$name-dr3.fits \
                in=$name/$name-dr4gs.fits in=$name/$name-dr4as.fits \
-               in=$name/$name-dr4asq0.fits \
+               in=$name/$name-dr4asq0.fits in=$name/$name-dr4asp.fits \
                ofmt="fits(primary=basic)" out=$name.fits
 

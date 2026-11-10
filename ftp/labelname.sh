@@ -19,6 +19,9 @@ dr4as)
 dr4asq0)
    echo DR4
    ;;
+dr4asp)
+   echo DR4
+   ;;
 *)
    echo $1
 esac

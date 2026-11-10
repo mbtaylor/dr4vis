@@ -16,6 +16,9 @@ dr4asq0)
 dr4cf)
    echo 5. crowded_field_source
    ;;
+dr4asp)
+   echo 6. all_source_photometry
+   ;;
 *)
    echo $1
 esac
