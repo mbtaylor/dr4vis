@@ -80,7 +80,8 @@ CENTER_OTHER_FIGS = $(CENTER_FIGS_SIZE0) $(CENTER_FIGS_SIZE1) \
                     center-ramp-size2.png
 
 CENTERDR4_FIGS_BASE = centerdr4-dr4gs centerdr4-dr4ncf \
-                      centerdr4-dr4asq0 centerdr4-dr4as
+                      centerdr4-dr4as centerdr4-dr4asq0 \
+                      centerdr4-dr4cf
 CENTERDR4_FIGS_SIZE0 = $(CENTERDR4_FIGS_BASE:=-size0.png)
 CENTERDR4_FIGS_SIZE1 = $(CENTERDR4_FIGS_BASE:=-size1.png)
 CENTERDR4_FIGS_SIZE2 = $(CENTERDR4_FIGS_BASE:=-size2.png)
@@ -321,7 +322,7 @@ center-size1.gif: $(CENTER_FIGS_SIZE2)
 	$(ANIMATE) $(CENTER_FIGS_SIZE2) $@
 
 
-CENTERDR4_AUX = auxmap=ember auxclip=0,1 auxmin=0 auxmax=2300
+CENTERDR4_AUX = auxmap=ember auxclip=0,1 auxmin=0 auxmax=1500
 
 $(CENTERDR4_FIGS_SIZE0): center.fits stilts
 	dr=$(DR_FROM_TARGET_FIG); \
@@ -344,11 +345,11 @@ centerdr4-ramp-size0.png: stilts
                  grid=false $(FONT_SIZE0) \
                  auxvisible=true auxwidth=20 auxcrowd=0.6 $(CENTERDR4_AUX) \
                  auxlabel='sources per square arcminute' \
-                 xpix=140 ypix=700 insets=,,,120 \
+                 xpix=140 ypix=1050 insets=,,,120 \
                  out=$@
 
 centerdr4-size0.png: $(CENTERDR4_FIGS_SIZE0) centerdr4-ramp-size0.png 
-	sh montage.sh -ramp centerdr4-ramp-size0.png $(CENTERDR4_FIGS_SIZE0) $@
+	sh montage5.sh -ramp centerdr4-ramp-size0.png $(CENTERDR4_FIGS_SIZE0) $@
 
 $(CENTERDR4_FIGS_SIZE1): center.fits stilts
 	dr=$(DR_FROM_TARGET_FIG); \
@@ -371,11 +372,11 @@ centerdr4-ramp-size1.png: stilts
                  grid=false $(FONT_SIZE1) \
                  auxvisible=true auxwidth=40 auxcrowd=0.3 $(CENTERDR4_AUX) \
                  auxlabel='sources per square arcminute' \
-                 xpix=240 ypix=1400 insets=,,,280 \
+                 xpix=240 ypix=2100 insets=,,,280 \
                  out=$@
 
 centerdr4-size1.png: $(CENTERDR4_FIGS_SIZE1) centerdr4-ramp-size1.png 
-	sh montage.sh -ramp centerdr4-ramp-size1.png $(CENTERDR4_FIGS_SIZE1) $@
+	sh montage5.sh -ramp centerdr4-ramp-size1.png $(CENTERDR4_FIGS_SIZE1) $@
 
 $(CENTERDR4_FIGS_SIZE2): center.fits stilts
 	dr=$(DR_FROM_TARGET_FIG); \
@@ -398,11 +399,11 @@ centerdr4-ramp-size2.png: stilts
                  grid=false $(FONT_SIZE2) \
                  auxvisible=true auxwidth=80 auxcrowd=0.15 $(CENTERDR4_AUX) \
                  auxlabel='sources per square arcminute' \
-                 xpix=480 ypix=2800 insets=,,,560 \
+                 xpix=480 ypix=4200 insets=,,,560 \
                  out=$@
 
 centerdr4-size2.png: $(CENTERDR4_FIGS_SIZE2) centerdr4-ramp-size2.png 
-	sh montage.sh -ramp centerdr4-ramp-size2.png $(CENTERDR4_FIGS_SIZE2) $@
+	sh montage5.sh -ramp centerdr4-ramp-size2.png $(CENTERDR4_FIGS_SIZE2) $@
 
 centerdr4-size0.gif: $(CENTERDR4_FIGS_SIZE1)
 	$(ANIMATE) $(CENTERDR4_FIGS_SIZE1) $@
