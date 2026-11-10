@@ -73,6 +73,10 @@ center.fits: stilts
 	sh drmap.sh -stilts "./stilts -Xmx12G" -name center -authall -hpx 12 \
            -where "NOT (l BETWEEN 15 AND 345) AND (b BETWEEN -10 AND 10)"
 
+center13.fits: stilts
+	sh drmap.sh -stilts "./stilts -Xmx20G" -name center13 -authall -hpx 13 \
+           -where "NOT (l BETWEEN 15 AND 345) AND (b BETWEEN -10 AND 10)"
+
 sky.fits: stilts
 	sh drmap.sh -stilts ./stilts -name sky -authall -hpx 8
 
@@ -80,7 +84,7 @@ sky9.fits: stilts
 	sh drmap.sh -stilts "./stilts -Xmx20G" -name sky9 -authall -hpx 9 
 
 sky10.fits: stilts
-	sh drmap.sh -stilts "./stilts -Xmx20G" -name sky10 -authall -hpx 10
+	sh drmap.sh -stilts "./stilts -Xmx40G" -name sky10 -authall -hpx 10
 
 lmc.fits: stilts
 	sh drmap.sh -stilts ./stilts -name lmc -authall -hpx 12 \

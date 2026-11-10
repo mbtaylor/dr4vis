@@ -80,7 +80,7 @@ CENTER_OTHER_FIGS = $(CENTER_FIGS_SIZE0) $(CENTER_FIGS_SIZE1) \
                     center-ramp-size2.png
 
 CENTERDR4_FIGS_BASE = centerdr4-dr4gs centerdr4-dr4ncf \
-                      centerdr4-dr4asq0 centerdr4-dr4cf
+                      centerdr4-dr4asq0 centerdr4-dr4as
 CENTERDR4_FIGS_SIZE0 = $(CENTERDR4_FIGS_BASE:=-size0.png)
 CENTERDR4_FIGS_SIZE1 = $(CENTERDR4_FIGS_BASE:=-size1.png)
 CENTERDR4_FIGS_SIZE2 = $(CENTERDR4_FIGS_BASE:=-size2.png)

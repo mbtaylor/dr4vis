@@ -56,8 +56,13 @@ opstap=https://gea.esac.esa.int/tap-server/tap
 pretap=https://geapre.esac.esa.int/tap-server/tap
 authprops="-Dauth.username=@username -Dauth.password=@password"
 authparam="auth=true"
+hpxindex="gaia_healpix_index($hpx, source_id)"
+if [ $hpx -gt 12 ]
+then
+   hpxindex="ivo_healpix_index($hpx, ra, dec)"
+fi
 
-cols2p="gaia_healpix_index($hpx, source_id) as hpx$hpx, \
+cols2p="$hpxindex as hpx$hpx, \
         COUNT(*) as nsrc, \
         AVG(astrometric_n_obs_al) AS nobs"
 
@@ -142,7 +147,7 @@ do
    then
       table=${dr4schema}.crowded_field_source
       where4=
-      cols2p4="gaia_healpix_index($hpx, source_id) as hpx$hpx, \
+      cols2p4="$hpxindex as hpx$hpx, \
                COUNT(*) as nsrc"
    else
       echo "unknown dr4 variant"
